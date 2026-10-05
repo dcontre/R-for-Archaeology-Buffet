@@ -4,19 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | Statisics for Archaeologists - with R!</title>
-  <meta name="description" content="Page not found | Statisics for Archaeologists - with R!" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <title>Page not found | An R-for-Archaeology Buffet</title>
+  <meta name="description" content="Page not found | An R-for-Archaeology Buffet" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | Statisics for Archaeologists - with R!" />
+  <meta property="og:title" content="Page not found | An R-for-Archaeology Buffet" />
   <meta property="og:type" content="book" />
-  
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | Statisics for Archaeologists - with R!" />
+  <meta name="twitter:title" content="Page not found | An R-for-Archaeology Buffet" />
   
   
   
@@ -32,7 +31,6 @@
   
 
 
-<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -50,13 +48,17 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
 
 
 <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -94,7 +96,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -107,7 +109,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -121,6 +123,33 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 </head>
 
@@ -134,99 +163,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="to-do.html"><a href="to-do.html"><i class="fa fa-check"></i><b>1</b> To do</a></li>
-<li class="chapter" data-level="2" data-path="batches-of-numbers-ch.-1.html"><a href="batches-of-numbers-ch.-1.html"><i class="fa fa-check"></i><b>2</b> Batches of Numbers (Ch. 1)</a></li>
-<li class="chapter" data-level="3" data-path="the-level-or-center-of-a-batch-ch.-2.html"><a href="the-level-or-center-of-a-batch-ch.-2.html"><i class="fa fa-check"></i><b>3</b> The Level or Center of a Batch (Ch. 2)</a></li>
-<li class="chapter" data-level="4" data-path="the-spread-or-dispersion-of-a-batch-ch.-3.html"><a href="the-spread-or-dispersion-of-a-batch-ch.-3.html"><i class="fa fa-check"></i><b>4</b> The Spread or Dispersion of a Batch (Ch. 3)</a></li>
-<li class="chapter" data-level="5" data-path="comparing-batches-ch.-4.html"><a href="comparing-batches-ch.-4.html"><i class="fa fa-check"></i><b>5</b> Comparing Batches (Ch. 4)</a></li>
-<li class="chapter" data-level="6" data-path="the-shape-or-distribution-of-a-batch-ch.-5.html"><a href="the-shape-or-distribution-of-a-batch-ch.-5.html"><i class="fa fa-check"></i><b>6</b> The Shape or Distribution of a Batch (Ch. 5)</a>
+<li class="chapter" data-level="1" data-path="more-plotting.html"><a href="more-plotting.html"><i class="fa fa-check"></i><b>1</b> More Plotting</a>
 <ul>
-<li class="chapter" data-level="6.0.1" data-path="the-shape-or-distribution-of-a-batch-ch.-5.html"><a href="the-shape-or-distribution-of-a-batch-ch.-5.html#the-data-for-the-ch.6-practice-are-in-alamadiyah.csv."><i class="fa fa-check"></i><b>6.0.1</b> The data for the Ch.6 Practice are in <span>AlAmadiyah.csv</span>.</a></li>
+<li class="chapter" data-level="1.1" data-path="more-plotting.html"><a href="more-plotting.html#getting-cute-with-histograms-boxplots-and-rugs"><i class="fa fa-check"></i><b>1.1</b> Getting Cute with Histograms, Boxplots, and Rugs</a></li>
+<li class="chapter" data-level="1.2" data-path="more-plotting.html"><a href="more-plotting.html#boxplot-alternatives"><i class="fa fa-check"></i><b>1.2</b> Boxplot alternatives</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="samples-and-populations-ch.-7.html"><a href="samples-and-populations-ch.-7.html"><i class="fa fa-check"></i><b>7</b> Samples and Populations (Ch. 7)</a></li>
-<li class="chapter" data-level="8" data-path="different-samples-from-the-same-population-ch.-8.html"><a href="different-samples-from-the-same-population-ch.-8.html"><i class="fa fa-check"></i><b>8</b> Different Samples from the Same Population (Ch. 8)</a></li>
-<li class="chapter" data-level="9" data-path="confidence-and-population-means-ch.-9.html"><a href="confidence-and-population-means-ch.-9.html"><i class="fa fa-check"></i><b>9</b> Confidence and Population Means (Ch. 9)</a></li>
-<li class="chapter" data-level="10" data-path="medians-and-resampling-ch.-10.html"><a href="medians-and-resampling-ch.-10.html"><i class="fa fa-check"></i><b>10</b> Medians and Resampling (Ch. 10)</a></li>
-<li class="chapter" data-level="11" data-path="categories-and-population-proportions-ch.-11.html"><a href="categories-and-population-proportions-ch.-11.html"><i class="fa fa-check"></i><b>11</b> Categories and Population Proportions (Ch. 11)</a></li>
-<li class="chapter" data-level="12" data-path="comparing-two-sample-means-ch.-12.html"><a href="comparing-two-sample-means-ch.-12.html"><i class="fa fa-check"></i><b>12</b> Comparing Two Sample Means (Ch. 12)</a>
+<li class="chapter" data-level="2" data-path="building-more-complex-plots.html"><a href="building-more-complex-plots.html"><i class="fa fa-check"></i><b>2</b> Building more complex plots</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="comparing-two-sample-means-ch.-12.html"><a href="comparing-two-sample-means-ch.-12.html#confidence-significance-and-strength"><i class="fa fa-check"></i><b>12.1</b> Confidence, Significance, and Strength</a></li>
-<li class="chapter" data-level="12.2" data-path="comparing-two-sample-means-ch.-12.html"><a href="comparing-two-sample-means-ch.-12.html#comparison-by-t-test"><i class="fa fa-check"></i><b>12.2</b> Comparison by <em>t</em> Test</a></li>
-<li class="chapter" data-level="12.3" data-path="comparing-two-sample-means-ch.-12.html"><a href="comparing-two-sample-means-ch.-12.html#the-one-sample-t-test"><i class="fa fa-check"></i><b>12.3</b> The One-Sample <em>t</em> Test</a></li>
-<li class="chapter" data-level="12.4" data-path="comparing-two-sample-means-ch.-12.html"><a href="comparing-two-sample-means-ch.-12.html#assumptions-and-robust-methods"><i class="fa fa-check"></i><b>12.4</b> Assumptions and Robust Methods</a></li>
-<li class="chapter" data-level="12.5" data-path="comparing-two-sample-means-ch.-12.html"><a href="comparing-two-sample-means-ch.-12.html#the-dataset-for-the-exercises-is-zirconium.txt."><i class="fa fa-check"></i><b>12.5</b> The dataset for the exercises is <span>Zirconium.txt</span>.</a></li>
+<li class="chapter" data-level="2.1" data-path="building-more-complex-plots.html"><a href="building-more-complex-plots.html#multiple-plot-panes-in-base-r"><i class="fa fa-check"></i><b>2.1</b> Multiple plot panes in Base R</a></li>
+<li class="chapter" data-level="2.2" data-path="building-more-complex-plots.html"><a href="building-more-complex-plots.html#multiple-plot-panes-in-ggplot2"><i class="fa fa-check"></i><b>2.2</b> Multiple plot panes in <strong>ggplot2</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="comparing-means-of-more-than-two-samples-ch.-13.html"><a href="comparing-means-of-more-than-two-samples-ch.-13.html"><i class="fa fa-check"></i><b>13</b> Comparing Means of More Than Two Samples (Ch. 13)</a>
+<li class="chapter" data-level="3" data-path="count-data.html"><a href="count-data.html"><i class="fa fa-check"></i><b>3</b> Working with Count Data</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="comparing-means-of-more-than-two-samples-ch.-13.html"><a href="comparing-means-of-more-than-two-samples-ch.-13.html#comparison-with-estimated-means-and-error-ranges"><i class="fa fa-check"></i><b>13.1</b> Comparison with Estimated Means and Error Ranges</a></li>
-<li class="chapter" data-level="13.2" data-path="comparing-means-of-more-than-two-samples-ch.-13.html"><a href="comparing-means-of-more-than-two-samples-ch.-13.html#comparison-by-analysis-of-variance"><i class="fa fa-check"></i><b>13.2</b> Comparison by Analysis of Variance</a></li>
-<li class="chapter" data-level="13.3" data-path="comparing-means-of-more-than-two-samples-ch.-13.html"><a href="comparing-means-of-more-than-two-samples-ch.-13.html#differences-between-populations-versus-relationships-between-variables"><i class="fa fa-check"></i><b>13.3</b> Differences between Populations versus Relationships between Variables</a></li>
-<li class="chapter" data-level="13.4" data-path="comparing-means-of-more-than-two-samples-ch.-13.html"><a href="comparing-means-of-more-than-two-samples-ch.-13.html#assumptions-and-robust-methods-1"><i class="fa fa-check"></i><b>13.4</b> Assumptions and Robust Methods</a></li>
-<li class="chapter" data-level="13.5" data-path="comparing-means-of-more-than-two-samples-ch.-13.html"><a href="comparing-means-of-more-than-two-samples-ch.-13.html#practice"><i class="fa fa-check"></i><b>13.5</b> Practice</a></li>
+<li class="chapter" data-level="3.1" data-path="count-data.html"><a href="count-data.html#frequency"><i class="fa fa-check"></i><b>3.1</b> Frequency</a></li>
+<li class="chapter" data-level="3.2" data-path="count-data.html"><a href="count-data.html#contingency-tables"><i class="fa fa-check"></i><b>3.2</b> Contingency Tables</a></li>
+<li class="chapter" data-level="3.3" data-path="count-data.html"><a href="count-data.html#diversity"><i class="fa fa-check"></i><b>3.3</b> Diversity measures</a></li>
+<li class="chapter" data-level="3.4" data-path="count-data.html"><a href="count-data.html#count-data-GLMs"><i class="fa fa-check"></i><b>3.4</b> Regression with count data using generalized linear models (GLMs)</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="comparing-proportions-of-different-samples-ch.-14.html"><a href="comparing-proportions-of-different-samples-ch.-14.html"><i class="fa fa-check"></i><b>14</b> Comparing Proportions of Different Samples (Ch. 14)</a>
+<li class="chapter" data-level="4" data-path="compositional-data.html"><a href="compositional-data.html"><i class="fa fa-check"></i><b>4</b> Working with Compositional Data</a></li>
+<li class="chapter" data-level="5" data-path="resampling.html"><a href="resampling.html"><i class="fa fa-check"></i><b>5</b> Resampling Approaches</a></li>
+<li class="chapter" data-level="6" data-path="r-for-arch.html"><a href="r-for-arch.html"><i class="fa fa-check"></i><b>6</b> R for Archaeology resources</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="comparing-proportions-of-different-samples-ch.-14.html"><a href="comparing-proportions-of-different-samples-ch.-14.html#comparison-with-estimated-proportions-and-error-ranges"><i class="fa fa-check"></i><b>14.1</b> Comparison with Estimated Proportions and Error Ranges</a></li>
-<li class="chapter" data-level="14.2" data-path="comparing-proportions-of-different-samples-ch.-14.html"><a href="comparing-proportions-of-different-samples-ch.-14.html#comparison-with-chi2"><i class="fa fa-check"></i><b>14.2</b> Comparison with <span class="math inline">\(\chi^2\)</span></a></li>
-<li class="chapter" data-level="14.3" data-path="comparing-proportions-of-different-samples-ch.-14.html"><a href="comparing-proportions-of-different-samples-ch.-14.html#measures-of-strength"><i class="fa fa-check"></i><b>14.3</b> Measures of Strength</a></li>
-<li class="chapter" data-level="14.4" data-path="comparing-proportions-of-different-samples-ch.-14.html"><a href="comparing-proportions-of-different-samples-ch.-14.html#the-effect-of-sample-size"><i class="fa fa-check"></i><b>14.4</b> The Effect of Sample Size</a></li>
-<li class="chapter" data-level="14.5" data-path="comparing-proportions-of-different-samples-ch.-14.html"><a href="comparing-proportions-of-different-samples-ch.-14.html#differences-between-populations-versus-relationships-between-variables-1"><i class="fa fa-check"></i><b>14.5</b> Differences between Populations versus Relationships between Variables</a></li>
-<li class="chapter" data-level="14.6" data-path="comparing-proportions-of-different-samples-ch.-14.html"><a href="comparing-proportions-of-different-samples-ch.-14.html#assumptions-and-robust-methods-2"><i class="fa fa-check"></i><b>14.6</b> Assumptions and Robust Methods</a></li>
-<li class="chapter" data-level="14.7" data-path="comparing-proportions-of-different-samples-ch.-14.html"><a href="comparing-proportions-of-different-samples-ch.-14.html#comparing-proportions-to-a-theoretical-expectation"><i class="fa fa-check"></i><b>14.7</b> Comparing Proportions to a Theoretical Expectation</a></li>
-<li class="chapter" data-level="14.8" data-path="comparing-proportions-of-different-samples-ch.-14.html"><a href="comparing-proportions-of-different-samples-ch.-14.html#practice-1"><i class="fa fa-check"></i><b>14.8</b> Practice</a></li>
-</ul></li>
-<li class="chapter" data-level="15" data-path="relating-a-measurement-variable-to-another-measurement-variable-ch.-15.html"><a href="relating-a-measurement-variable-to-another-measurement-variable-ch.-15.html"><i class="fa fa-check"></i><b>15</b> Relating a Measurement Variable to Another Measurement Variable (Ch. 15)</a>
+<li class="chapter" data-level="6.1" data-path="r-for-arch.html"><a href="r-for-arch.html#publications"><i class="fa fa-check"></i><b>6.1</b> Publications</a></li>
+<li class="chapter" data-level="6.2" data-path="r-for-arch.html"><a href="r-for-arch.html#online-materials"><i class="fa fa-check"></i><b>6.2</b> Online Materials</a></li>
+<li class="chapter" data-level="6.3" data-path="r-for-arch.html"><a href="r-for-arch.html#packages"><i class="fa fa-check"></i><b>6.3</b> Packages</a>
 <ul>
-<li class="chapter" data-level="15.1" data-path="relating-a-measurement-variable-to-another-measurement-variable-ch.-15.html"><a href="relating-a-measurement-variable-to-another-measurement-variable-ch.-15.html#problem-set"><i class="fa fa-check"></i><b>15.1</b> Problem Set</a></li>
+<li class="chapter" data-level="6.3.1" data-path="r-for-arch.html"><a href="r-for-arch.html#working-with-zooarchaeological-data"><i class="fa fa-check"></i><b>6.3.1</b> Working with zooarchaeological data</a></li>
+<li class="chapter" data-level="6.3.2" data-path="r-for-arch.html"><a href="r-for-arch.html#working-with-radiocarbon-data"><i class="fa fa-check"></i><b>6.3.2</b> Working with radiocarbon data</a></li>
+<li class="chapter" data-level="6.3.3" data-path="r-for-arch.html"><a href="r-for-arch.html#working-with-chronological-data"><i class="fa fa-check"></i><b>6.3.3</b> Working with chronological data</a></li>
+<li class="chapter" data-level="6.3.4" data-path="r-for-arch.html"><a href="r-for-arch.html#working-with-archaeological-spatial-data-in-r"><i class="fa fa-check"></i><b>6.3.4</b> Working with archaeological spatial data in R</a></li>
+<li class="chapter" data-level="6.3.5" data-path="r-for-arch.html"><a href="r-for-arch.html#archaeological-data-available-in-r"><i class="fa fa-check"></i><b>6.3.5</b> Archaeological data available in R</a></li>
+<li class="chapter" data-level="6.3.6" data-path="r-for-arch.html"><a href="r-for-arch.html#visualizing-archaeological-data"><i class="fa fa-check"></i><b>6.3.6</b> Visualizing archaeological data</a></li>
+<li class="chapter" data-level="6.3.7" data-path="r-for-arch.html"><a href="r-for-arch.html#correspondence-analysis-in-r"><i class="fa fa-check"></i><b>6.3.7</b> Correspondence Analysis in R</a></li>
+<li class="chapter" data-level="6.3.8" data-path="r-for-arch.html"><a href="r-for-arch.html#diversity-indices-for-ecology"><i class="fa fa-check"></i><b>6.3.8</b> Diversity indices for ecology</a></li>
+<li class="chapter" data-level="6.3.9" data-path="r-for-arch.html"><a href="r-for-arch.html#archaeosrp-an-r-package-for-extracting-and-synthesizing-federal-cultural-resources-data-for-research-and-management"><i class="fa fa-check"></i><b>6.3.9</b> ArchaeoSRP: An R Package for Extracting and Synthesizing Federal Cultural Resources Data for Research and Management</a></li>
+<li class="chapter" data-level="6.3.10" data-path="r-for-arch.html"><a href="r-for-arch.html#refitting-analysis"><i class="fa fa-check"></i><b>6.3.10</b> Refitting analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="relating-ranks-ch.-16.html"><a href="relating-ranks-ch.-16.html"><i class="fa fa-check"></i><b>16</b> Relating Ranks (Ch. 16)</a>
-<ul>
-<li class="chapter" data-level="16.1" data-path="relating-ranks-ch.-16.html"><a href="relating-ranks-ch.-16.html#calculating-spearmans-rank-correlation"><i class="fa fa-check"></i><b>16.1</b> Calculating Spearman’s Rank Correlation</a></li>
-<li class="chapter" data-level="16.2" data-path="relating-ranks-ch.-16.html"><a href="relating-ranks-ch.-16.html#significance"><i class="fa fa-check"></i><b>16.2</b> Significance</a></li>
-<li class="chapter" data-level="16.3" data-path="relating-ranks-ch.-16.html"><a href="relating-ranks-ch.-16.html#assumptions-and-robust-methods-3"><i class="fa fa-check"></i><b>16.3</b> Assumptions and Robust Methods</a></li>
-<li class="chapter" data-level="16.4" data-path="relating-ranks-ch.-16.html"><a href="relating-ranks-ch.-16.html#spearmans-rho"><i class="fa fa-check"></i><b>16.4</b> Spearman’s rho</a></li>
-<li class="chapter" data-level="16.5" data-path="relating-ranks-ch.-16.html"><a href="relating-ranks-ch.-16.html#problem-set-1"><i class="fa fa-check"></i><b>16.5</b> Problem Set</a></li>
+<li class="chapter" data-level="6.4" data-path="r-for-arch.html"><a href="r-for-arch.html#general-r-resources"><i class="fa fa-check"></i><b>6.4</b> General R Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="17" data-path="sampling-a-population-with-subgroups-ch.-17.html"><a href="sampling-a-population-with-subgroups-ch.-17.html"><i class="fa fa-check"></i><b>17</b> Sampling a Population with Subgroups (Ch. 17)</a>
-<ul>
-<li class="chapter" data-level="17.1" data-path="sampling-a-population-with-subgroups-ch.-17.html"><a href="sampling-a-population-with-subgroups-ch.-17.html#pooling-estimates"><i class="fa fa-check"></i><b>17.1</b> Pooling Estimates</a></li>
-<li class="chapter" data-level="17.2" data-path="sampling-a-population-with-subgroups-ch.-17.html"><a href="sampling-a-population-with-subgroups-ch.-17.html#estimating-population-proportions"><i class="fa fa-check"></i><b>17.2</b> Estimating Population Proportions</a></li>
-<li class="chapter" data-level="17.3" data-path="sampling-a-population-with-subgroups-ch.-17.html"><a href="sampling-a-population-with-subgroups-ch.-17.html#estimating-population-means"><i class="fa fa-check"></i><b>17.3</b> Estimating Population Means</a></li>
-<li class="chapter" data-level="17.4" data-path="sampling-a-population-with-subgroups-ch.-17.html"><a href="sampling-a-population-with-subgroups-ch.-17.html#densities"><i class="fa fa-check"></i><b>17.4</b> Densities</a></li>
-</ul></li>
-<li class="chapter" data-level="18" data-path="sampling-without-finding-anything-ch.-19.html"><a href="sampling-without-finding-anything-ch.-19.html"><i class="fa fa-check"></i><b>18</b> Sampling without Finding Anything (Ch. 19)</a>
-<ul>
-<li class="chapter" data-level="18.1" data-path="sampling-without-finding-anything-ch.-19.html"><a href="sampling-without-finding-anything-ch.-19.html#problem-set-2"><i class="fa fa-check"></i><b>18.1</b> Problem Set</a></li>
-</ul></li>
-<li class="chapter" data-level="19" data-path="similarities-between-cases-ch.-22.html"><a href="similarities-between-cases-ch.-22.html"><i class="fa fa-check"></i><b>19</b> Similarities Between Cases (Ch. 22)</a>
-<ul>
-<li class="chapter" data-level="19.1" data-path="similarities-between-cases-ch.-22.html"><a href="similarities-between-cases-ch.-22.html#euclidean-distance"><i class="fa fa-check"></i><b>19.1</b> Euclidean Distance</a>
-<ul>
-<li class="chapter" data-level="19.1.1" data-path="similarities-between-cases-ch.-22.html"><a href="similarities-between-cases-ch.-22.html#euclidean-distance-with-standardized-variables"><i class="fa fa-check"></i><b>19.1.1</b> Euclidean Distance with Standardized Variables</a></li>
-<li class="chapter" data-level="19.1.2" data-path="similarities-between-cases-ch.-22.html"><a href="similarities-between-cases-ch.-22.html#when-to-use-euclidean-distance"><i class="fa fa-check"></i><b>19.1.2</b> When To Use Euclidean Distance</a></li>
-</ul></li>
-<li class="chapter" data-level="19.2" data-path="similarities-between-cases-ch.-22.html"><a href="similarities-between-cases-ch.-22.html#presenceabsence-variables-simple-matching-and-jaccards-coefficients-of-similarity"><i class="fa fa-check"></i><b>19.2</b> Presence/Absence Variables: Simple Matching and Jaccard’s Coefficients of Similarity</a></li>
-<li class="chapter" data-level="19.3" data-path="similarities-between-cases-ch.-22.html"><a href="similarities-between-cases-ch.-22.html#mixed-variables-gowers-coefficient"><i class="fa fa-check"></i><b>19.3</b> Mixed Variables: Gower’s Coefficient</a></li>
-<li class="chapter" data-level="19.4" data-path="similarities-between-cases-ch.-22.html"><a href="similarities-between-cases-ch.-22.html#problem-set-3"><i class="fa fa-check"></i><b>19.4</b> Problem Set</a></li>
-</ul></li>
-<li class="chapter" data-level="20" data-path="multidimensional-scaling-ch.html"><a href="multidimensional-scaling-ch.html"><i class="fa fa-check"></i><b>20</b> Multidimensional Scaling (Ch.23)</a>
-<ul>
-<li class="chapter" data-level="20.1" data-path="multidimensional-scaling-ch.html"><a href="multidimensional-scaling-ch.html#configurations-in-different-numbers-of-dimensions"><i class="fa fa-check"></i><b>20.1</b> Configurations in Different Numbers of Dimensions</a></li>
-<li class="chapter" data-level="20.2" data-path="multidimensional-scaling-ch.html"><a href="multidimensional-scaling-ch.html#interpreting-the-configuration"><i class="fa fa-check"></i><b>20.2</b> Interpreting the Configuration</a></li>
-</ul></li>
-<li class="chapter" data-level="21" data-path="principal-components-analysis-ch.html"><a href="principal-components-analysis-ch.html"><i class="fa fa-check"></i><b>21</b> Principal Components Analysis (Ch.24)</a>
-<ul>
-<li class="chapter" data-level="21.1" data-path="principal-components-analysis-ch.html"><a href="principal-components-analysis-ch.html#correlations-and-variables"><i class="fa fa-check"></i><b>21.1</b> Correlations and Variables</a></li>
-<li class="chapter" data-level="21.2" data-path="principal-components-analysis-ch.html"><a href="principal-components-analysis-ch.html#carrying-out-the-analysis"><i class="fa fa-check"></i><b>21.2</b> Carrying Out the Analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="22" data-path="cluster-analysis-ch.html"><a href="cluster-analysis-ch.html"><i class="fa fa-check"></i><b>22</b> Cluster Analysis (Ch.25)</a>
-<ul>
-<li class="chapter" data-level="22.1" data-path="cluster-analysis-ch.html"><a href="cluster-analysis-ch.html#single-linkage-clustering"><i class="fa fa-check"></i><b>22.1</b> Single Linkage Clustering</a></li>
-<li class="chapter" data-level="22.2" data-path="cluster-analysis-ch.html"><a href="cluster-analysis-ch.html#complete-linkage-clustering"><i class="fa fa-check"></i><b>22.2</b> Complete Linkage Clustering</a></li>
-<li class="chapter" data-level="22.3" data-path="cluster-analysis-ch.html"><a href="cluster-analysis-ch.html#average-linkage-clustering"><i class="fa fa-check"></i><b>22.3</b> Average Linkage Clustering</a></li>
-<li class="chapter" data-level="22.4" data-path="cluster-analysis-ch.html"><a href="cluster-analysis-ch.html#clustering-the-ixcaquixtla-household-data"><i class="fa fa-check"></i><b>22.4</b> Clustering the Ixcaquixtla Household Data</a></li>
-<li class="chapter" data-level="22.5" data-path="cluster-analysis-ch.html"><a href="cluster-analysis-ch.html#clustering-by-variables"><i class="fa fa-check"></i><b>22.5</b> Clustering by Variables</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
       </nav>
@@ -236,7 +211,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statisics for Archaeologists - with R!</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An R-for-Archaeology Buffet</a>
           </h1>
         </div>
 
@@ -270,39 +245,39 @@ the table of contents to find the page you are looking for.</p>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": null,
-"search": false,
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": false,
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>
@@ -313,7 +288,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
