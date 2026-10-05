@@ -1,0 +1,739 @@
+---
+title: "An R-for-Archaeology Buffet"
+author: "[Daniel A. Contreras](https://dcontre.github.io/academic/) "
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: references.bib
+output:
+  bookdown::gitbook: default
+#  bookdown::pdf_book: default
+---
+
+```{r setup, echo=FALSE, purl=FALSE, message = FALSE}
+library(dplyr)
+library(magrittr)
+library(knitr)
+library(kableExtra)
+```
+
+This document compiles useful approaches, tips, and tricks for using R with archaeological data. Example data used are from Drennan [-@Drennan2009] unless otherwise specified. This is a smorgasbord, *not* an introduction to analytical methods. For data manipulation, see [Data Wrangling for Archaeology](https://dcontre.github.io/Rchaeology/introduction.html). 
+[//]:
+(
+# To do {-}
+- for dRennan:
+  - add refs/links in dRennan text to sections below
+  - check code in dRennan text; rewrite based on Baxter 2015 code
+  - rework spatial sampling chapter & problem set
+  - check rank correlation chapter - where does Spearman's rho denominator come from?
+  - replace dplyr::recode with dplyr::case_when or forcats::fct_recode
+- **janitor** version of crosstabs and marginal totals? `adorn`
+- add asides - make these separate workshop pages? - e.g. on  
+    - Otarola-Castillo & Torquato on Bayesian methods [otarola-castillo-torquato_BayesianStats.Rmd]
+      - on Bayesian and MCMC [@cowgill1993; @Litton1995]
+    - Ruiz-Giralt et al. [-@RuizGiralt2026] on compositional data (also the [**nexus** package](https://packages.tesselle.org/nexus/))
+    - something on isotope data? 
+    - radiocarbon 
+    - rework GIS labs in R? [~/Dropbox (Personal)/Florida/teaching/Arch&GIS/LabExercises/LabExercises_R.Rmd]
+    - compositional data (see e.g. Baxter [-@Baxter2016multi], Greenacre & Wood [-@greenacre2024], Glascock & McDonald [-@glascock2023]); also Greenacre & Wood GitHub (https://github.com/michaelgreenacre/CODAinPractice)
+- more Daegling on [resampling](#resampling) 
+- check IGR exercises ('/Users/daniel.contreras/UF Dropbox/Daniel Contreras/stanford_coursework/IGR_data.analysis.course') 
+- add an R companion to Ingram's [-@ingram2025] 'Climate and Human Behavior Studies for Our Warming World: An Introduction to the Models, Methods, and Data' 
+  - cover sources for climate data + basic visualization 
+  - second step would be analytical approaches
+- add to Data Wrangling workshop text: 
+  - getting the data in the shape you want is half the battle 
+    - "shape" here includes describing cases with: 
+      - the level of aggregation that you want 
+      - using the variables that you are interested in 
+      - also in the form that the tools you plan to use expect 
+        - plotting in Base R is very flexible about data format: you specify to the plotting tools which aspects of the data to use for which aspects of the plot 
+        - plotting in ggplot is highly prescribed: the plotting tools digest data in particular ways, and cannot be convinced to do otherwise: data must be reshaped to the requirements of the tools
+  - the other half of the battle is figuring out what you really want to know, and how to frame the questions that will give you relevant answers 
+    - This is the dirty secret behind the success of NHST: it's a system of framing questions to which interpretable answers can be generated. Whether they're the answers that are relevant to the questions that you want answered is another story... 
+)  
+
+
+
+# More Plotting 
+
+## Getting Cute with Histograms, Boxplots, and Rugs
+
+
+We have talked a bit about overlaying histograms. There's an easy solution which is a bit inelegant, and a slightly more complicated one that is much more elegant. The latter is from here: https://stackoverflow.com/questions/3541713/how-to-plot-two-histograms-together-in-r 
+The simple version is to just add a second histogram to the same space as the first, using the `add = T` argument to `hist()`. We can illustrate that by first generating 500 random numbers normally distributed around 4 and make a histogram, and then generating 500 random numbers normally distributed around 6 and plotting a second histogram on top of the first one. The x limits of the first histogram have to be manually adjusted to make space for the second one that will be added (try without that to see what happens)
+
+```{r}
+#make some toy data 
+set.seed(42) #make this repeatable
+batch1 <- rnorm(500, 4)
+batch2 <- rnorm(500, 6)
+hist(batch1, col = "red", xlim = c(0,10)) #
+hist(batch2, col = "blue", add = T) #
+```
+
+This has the disadvantage of partially obscuring the first one. This can be dealt with by making both partially transparent, which we can do by building the colors with the `rgb()` function. It takes four arguments: red, green, blue, and alpha, where alpha controls transparency. See below. How do you then tell which is which? Add a legend.
+
+```{r}
+
+hist(batch1, col = rgb(0, 0, 1, .25), xlim = c(0,10), 
+     main = "Comparing Batch1 and Batch2", 
+     xlab = "")  # first histogram 
+hist(batch2, col = rgb(1, 0, 0, .25), add=T)  # second
+legend("topright", legend = c("Batch1", "Batch2"),
+       fill = c(rgb(0, 0, 1, .25), rgb(1, 0, 0, .25)))
+```
+
+Very handy! But, as we've observed already, you can learn different things from different data visualizations, and often you'll want more than one - a histogram and a boxplot, for instance. Here we'll also add a rug plot, which illustrates every data value and really ties the whole plot together.
+
+```{r}
+par(mar = c(2, 2, 1, 1)) #shrink the margins to get more plotting space
+
+layout(matrix(c(2,1)), widths = c(1,1), heights = c(1,2))
+layout.show(n=2)
+
+hist(batch2, xlab = "", main = "", xlim = c(0,10))
+abline(v = median(batch2), col = "blue")
+abline(v = median(batch2 - (IQR(batch2))/2), lty = 2, col = "blue")
+abline(v = median(batch2 + (IQR(batch2))/2), lty = 2, col = "blue")
+low_ext <- summary(batch2)[2] - 1.5*IQR(batch2)
+high_ext <- summary(batch2)[5] + 1.5*IQR(batch2)
+abline(v = low_ext, col = "blue", lty = 3)
+abline(v = high_ext, col = "blue", lty = 3)
+
+rug(batch2, side = 1)
+
+boxplot(batch2, horizontal = T, xlab = "", ylab = "", xaxt = "n", ylim = c(0,10))
+abline(v = median(batch2), col = "blue")
+abline(v = median(batch2 - (IQR(batch2))/2), lty = 2, col = "blue")
+abline(v = median(batch2 + (IQR(batch2))/2), lty = 2, col = "blue")
+abline(v = low_ext, col = "blue", lty = 3)
+abline(v = high_ext, col = "blue", lty = 3)
+# dev.off()
+```
+
+This is a handy way to examine a batch of numbers; think for instance about the different things these two plots would show you if your distribution were bimodal.
+
+```{r}
+batch3 <- rbeta(500, 2, 2) #generate a batch
+batch3 <- c(batch3[1:(500/2)]*2+3,
+          batch3[(500/2+1):500]*2+7) #split that batch to make it bimodal
+```
+
+Examine with a histogram.
+```{r}
+hist(batch3, xlim = c(0,10))
+rug(batch3, side = 1)
+```
+
+And with a boxplot instead.
+
+```{r}
+boxplot(batch3, horizontal = T)
+rug(batch3, side = 1)
+```
+
+To juxtapose those plots, we could replicate the code from above, with lots of copying and pasting. If we're only planning to do this once or twice, that's probably the sensible approach. If instead we imagine repeating this often, we might want to write our own *function*. This is just like the code that we used to make a combination plot above, but instead of running each line on a given object, we specify arguments (in this case just one) that the function will take, and then detail what should be done with whatever is entered as that argument. 
+Here, we define a function called `combplot()`, which takes an argument called `dataset=`. Whatever is specified as `dataset` - in the same way that you might specify and argument to any function, e.g., `mean(batch1)`, is pushed through the lines of code that follow.
+If you run that code, you'll see a new function appear in your Global Environment. It is stored locally instead of as part of Base R or one of your loaded packages, but you can use it in exactly the same way. In this case, since that means by specifying `combplot(dataset = mydata)`, where 'mydata' is whatever vector you like. 
+
+```{r}
+combplot <- function(dataset){
+  par(mar = c(2, 2, 1, 1)) #shrink the margins to get more plotting space
+  layout(matrix(c(2,1)), widths = c(1,1), heights = c(1,2))
+  
+  hist(dataset, xlab = "", main = "", xlim = c(0,10))
+  abline(v = median(dataset), col = "blue")
+  abline(v = median(dataset - (IQR(dataset))/2), lty = 2, col = "blue")
+  abline(v = median(dataset + (IQR(dataset))/2), lty = 2, col = "blue")
+  low_ext <- summary(dataset)[2] - 1.5*IQR(dataset)
+  high_ext <- summary(dataset)[5] + 1.5*IQR(dataset)
+  abline(v = low_ext, col = "blue", lty = 3)
+  abline(v = high_ext, col = "blue", lty = 3)
+
+  rug(dataset, side = 1)
+
+  boxplot(dataset, horizontal = T, xlab = "", ylab = "", xaxt = "n", ylim = c(0,10))
+  abline(v = median(dataset), col = "blue")
+  abline(v = median(dataset - (IQR(dataset))/2), lty = 2, col = "blue")
+  abline(v = median(dataset + (IQR(dataset))/2), lty = 2, col = "blue")
+  abline(v = low_ext, col = "blue", lty = 3)
+  abline(v = high_ext, col = "blue", lty = 3)
+}
+```
+
+```{r}
+combplot(batch3)
+```
+
+What if you want to instead plot two batches with a cute semi-transparent overlay in *both* histogram and boxplot? Well...our `combplot()` function only can take one argument (i.e., one dataset), so you'd have to write a new function or modify this one for that.
+
+## Boxplot alternatives
+
+Violin plots and jittered datapoints, oh my!
+
+```{r message=F, warning=F}
+library(vioplot)
+
+nanxiong <- read.delim("data/Drennan_datasets/Nanxiong.txt", 
+                       row.names=1)
+head(nanxiong)
+
+nanxiong_EBA <- nanxiong[nanxiong$Period == "Early Bronze Age",]
+nanxiong_LBA <- nanxiong[nanxiong$Period == "Late Bronze Age",]
+
+vioplot(nanxiong_EBA$Area, nanxiong_LBA$Area, names = c("EBA", "LBA"), 
+        ylab = "Area (ha)", col = c("lightgreen", "salmon"))
+
+vioplot(Area ~ Period, nanxiong, ylab = "Area (ha)", col = c("lightgreen", "salmon"))
+
+```
+
+Points are overplotting...can we be cuter?
+
+```{r}
+nanxiong$x <- ifelse(nanxiong$Period == "Early Bronze Age", 1, 2)
+
+vioplot(Area ~ Period, nanxiong, ylab = "Area (ha)", col = c("lightgreen", "salmon"), 
+        lineCol = "grey", rectCol = NA, main = "Violin + boxplot + jittered points")
+points(x = jitter(nanxiong$x, .25), y = nanxiong$Area, cex = .6, 
+       pch = 20, col = rgb(0,0,0,.5))
+```
+
+
+Or with `ggplot`, which makes elegant plots but has idiosyncratic syntax (that I would recommend *not* screwing around with until you have a firm grasp on Base R).
+
+```{r message=F, warning=F}
+library(ggplot2)
+  
+ggplot(data = nanxiong, aes(x = Period, y = Area, fill = Period)) +
+    geom_violin(width=1.4) +
+    geom_boxplot(width=0.1, color="grey", alpha=0.2) +
+    geom_point(size = .5, position = position_jitter(.1), alpha = .3) +
+    theme_minimal() +
+    theme(
+      legend.position="none",
+      plot.title = element_text(size=11)
+    ) +
+    labs(x = "", y = "Area (ha)", title = "Nanxiong Bornze Age Site Areas",
+         subtitle = "Violin + boxplot + jittered points\n...with ggplot")
+```
+
+
+You may not always know how you might like visualize the data you have, much less how to actually implement that. You can try the [R Graph Gallery](https://r-graph-gallery.com/) for inspiration. But keep in mind that a data visualization is trying to communicate information, first and foremost, and should be selected based on how well it does that (that is, you should make *lots* of data plots, but be picky about the ones that you keep, and even pickier about the ones that you share, as has been recognized since well before computational tools made generating complex graphics more accessible [@cleveland1985]). It may also be useful to consult more specifically archaeological treatments of data visualization (e.g., [@banning2020_viz; @Baxter2016graphics]; the latter is available [here](http://www.barbicanra.co.uk/simple-r.html))
+
+# Building more complex plots
+
+## Multiple plot panes in Base R
+
+What if we wanted to, for example, compare boxplot and violin plot side-by-side? The simplest way to juxtapose plots is to adjust the `mfrow` parameter of your graphics pane (if you're working in the console rather than knitting R Markdown, this will keep the new setting until you reset it using `dev.off()`). 
+
+
+```{r}
+#set the mfrow parameter in par() to one rows and two columns
+par(mfrow  =  c(1,2))  
+
+boxplot(Area ~ Period, nanxiong, ylab = "Area (ha)", col = c("lightgreen", "salmon"))
+vioplot(Area ~ Period, nanxiong, ylab = "Area (ha)", col = c("lightgreen", "salmon"))
+
+#or vertically instead
+
+par(mfrow  =  c(2,1))  
+
+boxplot(Area ~ Period, nanxiong, ylab = "Area (ha)", col = c("lightgreen", "salmon"), title = "Boxplot")
+vioplot(Area ~ Period, nanxiong, ylab = "Area (ha)", col = c("lightgreen", "salmon"))
+
+# dev.off()
+```
+Note that you may rapidly bump up against problems caused by the default graphics settings, which don't always allocate space as you'd like for multiple panes. Very often you might like to limit the amount of white space between plots (allowing them to be larger); experiment with `par(mar =)` to do this (see `?par`). 
+
+There's no reason to limit yourself to two panes - `mfrow(c(3,3))` will give you three of each, for instance. Multiple panes exploring multiple permutations of variables are common, though they do risk becoming too complex for viewers to digest.
+
+## Multiple plot panes in **ggplot2**
+
+Thomas Lin Pedersen's [**patchwork** package](https://patchwork.data-imaginist.com/) enables something similar for **ggplot2** graphics - and does so well enough to constitute an argument for using ggplot.
+
+To use it, write the output of your plots to objects, then combine those. 
+
+```{r message=F, warning=F}
+library(patchwork)
+
+p_viol <- ggplot(data = nanxiong, aes(x = Period, y = Area, fill = Period)) +
+    geom_violin(width=1.4) +
+    geom_point(size = .5, position = position_jitter(.1), alpha = .3) +
+    theme_minimal() +
+    theme(
+      legend.position="none",
+      plot.title = element_text(size=11)
+    ) +
+    labs(x = "", y = "Area (ha)", title = "Nanxiong Bornze Age Site Areas",
+         subtitle = "Violinplot + jittered points\n...with ggplot")
+
+p_box <- ggplot(data = nanxiong, aes(x = Period, y = Area, fill = Period)) +
+    geom_boxplot(width=0.1, color="grey") +
+    geom_point(size = .5, position = position_jitter(.1), alpha = .3) +
+    theme_minimal() +
+    theme(
+      legend.position="none",
+      plot.title = element_text(size=11)
+    ) +
+    labs(x = "", y = "Area (ha)", title = "Nanxiong Bornze Age Site Areas",
+         subtitle = "Boxplot + jittered points\n...with ggplot")
+
+p_viol + p_box
+
+#or 
+
+p_viol / p_box
+
+```
+
+The logic of arrangement can be extended to more panes. 
+
+```{r warning = F}
+(p_box + p_box) / p_viol
+```
+
+
+More complex arrangements with more elements are possible, as are various neat tricks likes shared axes; see the [documentation](https://patchwork.data-imaginist.com/) for details.
+
+# Working with Count Data {#count-data}
+
+Archaeological data are commonly counts - of projectile points of various types, of donkey and zebra teeth, of diagnostic sherds associated with distinct periods or cultural groups, etc. A fundamental archaeological task is the comparison of these counts across time and space. A wide variety of analytical methods of varying complexity are employed primarily to identify and interrogate patterning in such count data - but some simple exploration and visualization is almost always valuable as well. 
+
+Some tools for working with count data, as well as sample data with which to work, can be found in Frerebeau's **tabula** [-@frerebeau2019]; not to be confused with the software tool for scraping data) and **folio** [-@frerebeaus2025] packages. The examples below are adapted from the **tabula** documentation.  
+
+## Frequency {#frequency}
+
+A look at `?mississippi` will tell you that these are counts of ceramic types from 20 sites in the Lower Mississippi Valley [@lipo2015]. These provide a useful example of archaeological count data (without necessarily entering into the theory and practice of seriation and arguments about cultural transmission). 
+
+```{r}
+library(tabula)
+library(folio)
+
+## Data from Lipo et al. 2015 in folio
+data("mississippi")
+
+kable(mississippi) %>% kableExtra::kable_classic(full_width = F)
+```
+
+Archaeologists have been thinking about data like these for a *long* time (see [@mcnutt2005] for a review)! The method implemented by **tabula** is derived from James A. Ford [-@ford1962quantitative], but Ford and Willey were already producing similar graphics more than a decade earlier [@Ford1949], and Phillips, Ford, and Griffin devote a section ('Seriation Analysis of Pottery Collections' in *Archaeological Survey in the Lower Mississippi Valley, 1940–1947*) to this approach [@phillips1951, 217-236].
+
+```{r fig.height=8}
+## Ford diagram
+plot_ford(mississippi)
+```
+
+## Contingency Tables {#contingency-tables}
+
+Count data are the basis of contingency tables or cross-tabulations, which are the basis of $\chi$-square analysis and many multivariate approaches. They can also be informative without further analysis. 
+
+see Shennan [-@Shennan_1997, Ch.13] 
+see [@lewis1986]
+
+The `plot_spot()` and `plot_bertin()` functions are tools for visualizing these sorts of matrices (also, meet `|>`, another pipe function like `%>%`). 
+
+```{r fig.height=8} 
+mississippi |> 
+  plot_spot(freq = T)
+
+mississippi |> 
+  plot_bertin(freq = T, flip = F, threshold = mean)
+
+```
+
+
+The `occurence()` function produces a co-occurrence matrix, a sort of contingency table with the same variables on both axes. 
+
+```{r}
+## Co-occurrence of ceramic types 
+mississippi |> 
+  occurrence() 
+```
+
+These can also be visualized using `plot_spot()`.
+
+```{r fig.height=8}
+mississippi |> 
+  occurrence() |> 
+  plot_spot()
+```
+
+## Diversity measures {#diversity}
+
+See Baxter 2001 [@baxter2001]
+Carlson [-@carlson2017quantitative, Ch.18]
+
+- "The simplest measure of diversity, richness is just the number of types in an assemblage" (p399)
+  - "...richness is usually correlated with assemblage size" 
+- "The transpose of richness is ubiquity, which is just the number of assemblages that contain a particular type" (p400)
+- " More types indicate a more diverse assemblage, but
+among assemblages with the same number of types, those with the same number of artifacts in each type are more diverse than assemblages having a dominant type with the remaining types having very few specimens." (p400)
+
+> Shannon diversity measure (also called Shannon’s information index, Shannon–Weaver, or Shannon–Wiener). The measure comes from a
+1948 paper by Claude Shannon who developed information entropy as a measure of uncertainty using concepts developed by Norbert Wiener. Shannon’s work was later popularized by Warren Weaver. The measure increases when there is more uncertainty in predicting what type a randomly selected artifact will be. High diversity (entropy) means that there are more types and the artifacts are spread more evenly over the types... 
+
+The Shannon index is calculated by assessing the relative proportion of each type in a sample: 
+
+$$H'=-\sum_{i=1}^{S}{p_i\ln{}p_i}$$
+*H'* is the Shannon index, calculated by iterating through each ($i^{th}$) type in the sample and multiplying the proportion of the sample represented by that type $p_i$ by the natural log of that proportion ($\ln{}p_i$); *S* is the total number of types ("species", as originally formulated, since this was developed as an ecological measure). 
+
+Other indices are available, e.g. the Simpson index, which calculates how likely it is that two randomly drawn individuals will be of different types. The Simpson index ($D_1$) is calculated by iterating through the sample, squaring the proportion of each type and summing them. 
+
+$$D_1=\sum_{i=1}^{S}{p_i}^2$$
+The inverse of the Simpson index provides the *effective number of species*, which is the number of species/types that *if evenly distributed* would produce a similar diversity index. In effect it assesses the observed diversity but downweights or even discounts types that occur only rarely.
+
+The **vegan** package provides a straightforward tool - `diversity()` - for calculating multiple diversity indices. We can test those using the 'cantabria' dataset - counts of forty-four distinct design elements on engraved bones from five Lower Magdalenian sites in northern Spain (Cantabria) - originally published by Conkey [-@conkey1980] and included in the **tabula** package.
+
+```{r}
+## Data from Conkey 1980, Kintigh 1989, p. 28
+data("cantabria", package = "tabula")
+
+kable(cantabria) %>% kableExtra::kable_classic(full_width = F)
+
+```
+
+```{r}
+library(vegan)
+
+diversity(cantabria, index = "shannon")
+diversity(cantabria, index = "simpson")
+```
+
+How can we interpret the numbers that result? These are index values, which is to say that they don't mean much in isolation, but can be usefully compared to one another. That is, both Shannon and Simpson indices suggest that diversity of design elements on engraved bones is higher at Altamira than elsewhere.
+
+These indices, and a few others, are also implemented in the **tabula** package with the `heterogeneity()` function. 
+
+```{r}
+
+## Measure diversity by comparing to simulated assemblages (after Kintigh 1989)
+cantabria |>
+  heterogeneity(method = "shannon") 
+```
+
+In fact diversity measures are really a can of worms; see Erin & Buchanan 2022, and especially the Colwell & Chao chapter [@Colwell_Chao_2022]. The fundamental issue is how to compare diversity between assemblages with different sample sizes - which is usually exactly what we'd like to compare. Are larger samples are more likely to capture more diversity, making them hard to compare to smaller samples? How much attention should we pay to rare species/types?
+
+
+```{r}
+
+## Measure diversity by comparing to simulated assemblages (after Kintigh 1989)
+cantabria |>
+  heterogeneity(method = "shannon") |>
+  simulate(seed = 42) |>
+  plot()
+```
+
+See Baxter [-@baxter2001, 718-721], who reexamines [@kintigh1984measuring; @kaufman1998measuring] and concludes that bootstrapping provides a more reliable means of comparing richnesss. What kind of resampling does `tabula::simulate()` implement?
+
+> The data are given in Kaufman (1998) in the form of a 44 x 5 table where columns correspond to different Early Magdalenian sites in Cantabrian Spain and rows to design elements on engraved bone artifacts. Entries in the original table correspond to counts of design elements from each site. The five sites Altamira (A), Cueto de la Mina (CM), El Juyo (EJ), El Cierro (EC), and La Paloma (LP) differ in their apparent richness, but also in terms of sample size. Altamira, with tty = 152 and Sj = 38, is apparently the richest, but there has been some debate about whether this is a real phenomenon or an effect of sample size (Kaufman 1998; Rhode 1988). In particular, it is of interest to know if Altamira is genuinely richer than Cueto de la Mina, which has a lower Sj = 27 but also lower ^ = 69, since different methods have suggested apparently different answers to this question (Kaufman 1998).
+
+We can replicate Baxter's [-@baxter2001] Figure 2 - but Baxter uses that figure to illustrate some shortcomings of the simulation method that produces it. 
+
+```{r fig.width=8}
+cantabria |>
+  richness(method = "count") |>
+  simulate(seed = 42) |>
+  plot(log = "", pch = 1:5) 
+text(y = richness(cantabria, method = "count"), x = rowSums(cantabria),
+       labels = rownames(cantabria), adj = 0, pos = 2)
+```
+
+## Regression with count data using generalized linear models (GLMs) {#count-data-GLMs}
+
+Linear regression (Drennan, Ch.15), it turns out, is not the only way to explore the relationship between numerical variables. Worryingly for archaeologists, linear regression turns out to behave demonstrably poorly with count data [@Codding2024; @mccall2024], which are of course very common in archaeology (archaeologists love counting things almost as much as they love classifying them). The problem lies in the way that linear regression assesses goodness-of-fit, which is through ordinary least squares (OLS). One of the assumptions of OLS is that values are reasonably normally distributed, which holds for measurements (e.g., projectile point lengths), but not for counts - counts of, e.g., sherds of various types across strata tend to have more small values than large values, and tend to include zeroes. A normal distribution, as a result, is a relatively poor approximation of their distribution. So, why use one, historically? As with other parametric statistics, there are practical reasons: assumptions of normality made it possible to use less computationally intensive methods. Only in the 21st century has sufficient computing power become widely available to make GLMs a viable alternative (see [@mccall2024, 3-9] for a brief history).
+
+> ...count regression does a better job [than linear or log-linear regression] of inferring the underlying relationship between *x* and *y*, which is the goal of applying regression to answer archaeological questions in the first place. [@Codding2024, 164]
+
+Codding and Brewer [-@Codding2024, Fig. 1] illustrate the distinctions between linear, log-linear, and Poisson regression using a toy dataset of counts of obsidian artifacts across 12 archaeological sites at varying distances from an obsidian source. Reproducing their Figure 1 illustrates both how to implement these methods and their shortcomings.
+
+```{r}
+obsid_sites <- data.frame(dist.km = c(3, 8, 19, 20, 20, 22, 27, 33, 37, 40, 46, 62),
+           artifact.count = c(17, 19, 7, 9, 3, 6, 5, 1, 6, 1, 2, 2))
+
+lm.obsid <- lm(artifact.count ~ dist.km, obsid_sites)
+summary(lm.obsid)
+
+obsid_sites$predicted <- round(fitted(lm.obsid), 2)
+obsid_sites$residual <- round(residuals(lm.obsid), 2)
+
+# log response variable
+obsid_sites$log_count <- log(obsid_sites$artifact.count)
+lm.logobsid <- lm(log(artifact.count) ~ dist.km, obsid_sites)
+summary(lm.logobsid)
+obsid_sites$logpredicted <- round(fitted(lm.logobsid), 2)
+obsid_sites$logresidual <- round(residuals(lm.logobsid), 2)
+```
+
+Calculate Poisson GLM (Poisson refers to the error distribution).
+
+```{r}
+glm_Pois.obsid_count <- glm(artifact.count ~ dist.km,
+family = poisson(link = "log"),
+data = obsid_sites
+)
+summary(glm_Pois.obsid_count)
+
+
+obsid_sites$glmpredicted <- round(fitted(glm_Pois.obsid_count), 2)
+obsid_sites$glmresidual <- round(residuals(glm_Pois.obsid_count), 2)
+```
+
+```{r echo = F, include = F}
+
+dist_seq <- seq(from = 0, 
+to = max(obsid_sites$dist.km, na.rm = TRUE) + 5, #to the max +5 -NAs
+by = 1
+)
+
+art_pred <- predict(glm_Pois.obsid_count, #the model object
+newdata = data.frame(dist.km = dist_seq), #*
+se = TRUE, #include the standard error of the prediction
+type = "link" #be sure to predict on the link scale
+)
+
+inv_link.glm_Pois <- family(glm_Pois.obsid_count)$linkinv #save model inverse link
+#this plots the predicted model fit
+
+with(obsid_sites,
+plot(artifact.count ~ dist.km,
+pch = 19,
+xlim = c(0, 65),
+ylim = c(0, 20),
+xlab = "Distance (km)",
+ylab = "Artifact count",
+type = "p"
+)
+)
+lines(inv_link.glm_Pois(art_pred$fit)~ dist_seq)
+
+
+predict(glm_Pois.obsid_count, #the model object
+newdata = data.frame(dist.km = obsid_sites$dist.km), #*
+se = T, #include the standard error of the prediction 
+type = "response" 
+) 
+
+```
+
+Plot all three. 
+
+```{r}
+
+#linear regression
+par(mfrow = c(1,3), pty = "s")
+plot(obsid_sites$artifact.count ~ obsid_sites$dist.km, xlab = "Distance (km)", 
+     ylab = "Artifact count", las = 1, pch = 16, xlim = c(0,65), ylim = c(-3,20),
+     main = "Linear")
+abline(lm.obsid, col = "blue")
+abline(h = 0, lty = 2)
+matlines(t(cbind(obsid_sites$dist.km, obsid_sites$dist.km)), 
+         t(cbind(obsid_sites[,3], obsid_sites[,3] + obsid_sites[,4])), 
+         lty=2, col="blue")
+
+
+#log-linear regression
+#here we take the results of the log-linear regression and transform them back into counts 
+plot(exp(obsid_sites$log_count) ~ obsid_sites$dist.km, xlab = "Distance (km)", 
+     ylab = "log(count)", las = 1, pch = 16, xlim = c(0,65), ylim = c(-3,20),
+     main = "Log-response linear")
+lines(seq(0,65, by = 1), exp(predict(lm.logobsid, newdata = data.frame(dist.km = seq(0, 65, by = 1)))), 
+                                 col = "blue")
+abline(h = 0, lty = 2)
+matlines(t(cbind(obsid_sites$dist.km, obsid_sites$dist.km)), 
+         t(cbind(exp(obsid_sites[,6]), exp(obsid_sites[,6] + obsid_sites[,7]))), 
+         lty=2, col="blue")
+
+
+# poisson regression
+
+plot(obsid_sites$artifact.count ~ obsid_sites$dist.km, xlab = "Distance (km)", 
+     ylab = "log(count)", las = 1, pch = 16, xlim = c(0,65), ylim = c(-3,20),
+     main = "Poisson")
+abline(h = 0, lty = 2)
+lines(exp(art_pred$fit)~ dist_seq, col = "blue")
+matlines(t(cbind(obsid_sites$dist.km, obsid_sites$dist.km)), 
+         t(cbind(obsid_sites[,8], obsid_sites[,8] - (obsid_sites[,8] - obsid_sites[,2]))), 
+         lty=2, col="blue")
+
+```
+
+As Codding and Brewer [-@Codding2024, 164] point out, the linear regression, which estimates fit using ordinary least squares, "underpredicts both high values...and low values...including predicting counts below zero", while logging the response variable before performing a linear regression "does avoid predicting values below zero...but the model still underestimates high values at sites close to the volcanic source". The GLM "does a good job of predicting high counts at sites close to the source...and does not predict counts below zero". In other words, the GLM is the best suited of the three for making predictions about unknown values of *y* given values of *x* (though we should always be careful about this outside of the range of observed values of *x*). More profoundly, the GLM may give us some insight into how *x* and *y* are related...which may enable us to (re)examine our ideas about *why* they are related. 
+
+<!-- Why is the goodness of fit lower for the log-linear regression, if it avoid some of the problems of the linear outlined here? In the case of the Poisson regression, is *AIC* different enough from $r^{2}$ that superficially similar values are not actually similar? Does our measure of goodness of fit fail to capture the kinds of problems (or avoidance thereof) that Codding and Brewer describe?  -->
+
+For additional examples, including not only Poisson regression but also other GLMs (negative binomial regression, count regression with variable sampling windows, and count regression with multiple predictors) see Codding and Brewer [-@Codding2024]. Sample data and R code are available in the [supplement](https://doi.org/10.48512/XCV8494446).
+
+# Working with Compositional Data {#compositional-data}
+
+See [@RuizGiralt2026]. Sample data available also in the [**nexus** package](https://packages.tesselle.org/nexus/). See also Baxter [-@Baxter2016multi], Greenacre & Wood [-@greenacre2024], Glascock & McDonald [-@glascock2023]); also Greenacre & Wood GitHub (https://github.com/michaelgreenacre/CODAinPractice).
+
+# Resampling Approaches {#resampling}
+
+See Baxter [-@baxter2001]
+
+An example based on Raymond Dart's right-handed australopith murderers - 7 of 9 baboon skulls damaged on the left side - thanks to Dave Daegling. [@dart1949predatory]
+
+Really this is just an excuse to quote Dart's famously lurid prose:
+
+> carnivorous creatures that seized living quarries by violence, battered them to death, tore apart their broken bodies, dismembered them limb from limb, slaking their ravenous thirst with the hot blood of victims and greedily devouring livid writhing flesh.
+
+But even if we were to accept Dart's inference that the damage is the result of bloodthirsty australopithecines (paleoanthropologists don't, for the record), does 7 of 9 left-side injuries really constitute compelling evidence that austrolopithecines were right-handed? Is there a case to answer? 
+We can address this through resampling by framing the question as, "If australopithecines were equally likely to be left- or right-handed, how likely is it that in a sample of nine only 2 would be left-handed?" 
+
+```{r}
+# make some data
+
+hand <- c('R','L')
+
+southpaw <- NULL
+
+for (i in 1:1000) {
+  
+  bash <- sample(hand,9,replace=TRUE)
+  southpaw[i] <- length(bash[bash=='L'])
+  
+}
+
+#visualize
+hist(southpaw)
+
+#calculate
+length(southpaw[southpaw<=2])/length(southpaw)
+```
+
+
+# R for Archaeology resources {#r-for-arch}
+
+There are more R-for-archaeology resources than it's possible to keep up with. Here are some places to start. 
+
+## Publications 
+
+For a brief review of books on quantitative methods in archaeology, see Drennan's section on 'Suggested Reading' [-@Drennan_2009, 321-325]. More recent texts not covered there include include the 2nd edition of Baxter's *Exploratory multivariate Analysis in Archaeology* [-@baxter2015exploratory], VanPool and Leonard's *Quantitative Analysis in Archaeology* [-@VanPool_Leonard_2011], McCall's *Strategies for Quantitative Research: Archaeology by Numbers* [-@mccall2018strategies], Carlson's *Quantitative methods in Archaeology Using R* [-@carlson2017quantitative], and the first half of Banning's *The Archaeologist’s Laboratory* [-@banning2020, Ch.1-8]. Baxter's *Notes on Quantitative Archaeology and R* [-@Baxter2015quantarchR], available [here](https://www.researchgate.net/publication/277931925_Notes_on_Quantitative_Archaeology_and_R) though not formally published, is at least as cogent and useful as many things that are. There are also a few treatments of application of quantitative methods to particular kinds of archaeological data, such as Marston [-@marston2014] and Smith [-@smith2014] on archaeobotanical data and Gifford-Gonzales [-@Gifford_Gonzalez_2018] and Lyman [-@Lyman_2008] on zooarchaeological data. 
+
+There are several recent chapters and papers presenting introduction to particular topics, especially multivariate [@glascock2023; @lopezgarcia2026], Bayesian [@OtarolaCastillo2018; @OtarolaCastillo2022], and modeling [@crema2025] approaches. There are even more examples of their application, particularly in spheres where analytical approaches are fundamental to data interpretation (for example in use of chemical compositional data); listing those is beyond what I can do here. 
+
+
+
+Archaeoriddle [@CortellNicolau2025]
+https://github.com/acortell3/archaeoriddle
+
+
+## Online Materials
+
+-  Several documents/guides authored by Ben Marwick 
+*Archaeological Science with R*\
+<https://benmarwick.github.io/aswr/>\
+*Introduction to Analysing Archaeological Radiocabon Ages Using R*\
+<https://github.com/benmarwick/Analysing-Archaeological-Radiocabon-Ages-Using-R>\
+*Using R and Related Tools for Reproducible Research in Archaeology*\
+<http://www.practicereproducibleresearch.org/case-studies/benmarwick.html>\
+*Reproducibility and Transparency in Archaeological Science*\
+<https://benmarwick.github.io/2019-12-09-brown/>\
+*Statistical Inference and Data Exploration for Archaeologists: A Guide to using R for Beginners*\
+<https://benmarwick.github.io/stat-inference-and-exploration-for-archaeologists/stat-inference-and-exploration-for-archaeologists.html#1>\
+*How To Do Archaeological Science Using R*\
+<https://benmarwick.github.io/How-To-Do-Archaeological-Science-Using-R/> *CRAN Task View: Archaeological Science* <https://github.com/benmarwick/ctv-archaeology>
+
+- Joe Roe on *Data Visualization for Archaeologists in R*\
+<https://joeroe.io/r4r_visualisation/r4r_visualisation_slides.html#1>
+
+- Joe Roe's list of archaeological packages in R 
+<https://github.com/stars/joeroe/lists/r-packages-for-archaeology>
+
+- Gianmarco Alberti on *Correspondence Analysis in Archaeology*\
+<http://cainarchaeology.weebly.com>\
+(including his **cainterptools** package)
+
+- Richard Telford on integrating *OxCal and R*\
+<https://quantpalaeo.wordpress.com/2016/11/19/oxcal-and-r/>
+
+- Dave Carlson's R resources for various statistics & archaeology texts\
+<https://sites.google.com/a/tamu.edu/dlcarlson/home/r-project-for-statistical-computing>
+
+- Blake Vernon's *Quantitative Analysis of Archaeological Data* course\
+<https://kbvernon.github.io/qaad/>
+
+- Strupler, N. 2021 Re-discovering Archaeological Discoveries. Experiments with reproducing archaeological survey analysis, *Internet Archaeology* 56. <https://doi.org/10.11141/ia.56.6> [includes R code for reproducing analyses of published survey results]
+
+- Matt Peeples' R scripts for archaeology <https://mattpeeples.net/data-and-software/>
+
+- Nicolas Frerebeau's *tesselle* collection of packages: <https://www.tesselle.org/>
+
+## Packages
+
+### Working with zooarchaeological data
+
+The **zoolog** package (Zooarchaeological Analysis with Log-Ratios)\
+<https://github.com/josempozo/zoolog>\
+**zooaRch** <https://rdrr.io/cran/zooaRch/> 
+
+**ZooArchGUI** <http://www.zooarchgui.org/>
+
+### Working with radiocarbon data
+
+**BChron** <http://andrewcparnell.github.io/Bchron/>\ 
+
+**rcarbon** <https://github.com/ahb108/rcarbon/>  
+
+**geoChronR** <https://github.com/nickmckay/GeoChronR>  
+
+**coffee** <https://github.com/Maarten14C/coffee> 
+
+### Working with chronological data
+
+**archSeries** <https://github.com/davidcorton/archSeries>\ 
+
+Joe Roe's **stratigraphr** package: <https://stratigraphr.joeroe.io/>\ 
+
+**ArchaeoPhases** <https://www.math.sciences.univ-nantes.fr/~philippe/ArchaeoPhases.html> 
+
+Visualization of Date Ranges with [**datplot**](https://cran.r-project.org/web/packages/datplot/vignettes/data_preparation.html) 
+
+### Working with archaeological spatial data in R
+
+**leastcostpath** <https://github.com/josephlewis/leastcostpath> 
+
+[**movecost**](https://cran.r-project.org/web/packages/movecost/index.html) 
+
+### Archaeological data available in R
+
+**archdata** <https://rdrr.io/cran/archdata/>\ 
+
+**p3k14c** <https://github.com/people3k/p3k14c> 
+
+**folio** <https://packages.tesselle.org/folio/> 
+
+**binford** <http://github.com/benmarwick/binford> 
+
+### Visualizing archaeological data
+
+**archeoViz** <https://cran.r-project.org/web/packages/archeoViz/index.html> 
+
+### Correspondence Analysis in R
+
+**cainterptools** <http://cainarchaeology.weebly.com/cainterprtools-r-package.html> 
+
+### Diversity indices for ecology
+
+<https://cran.r-project.org/web/packages/tabula/vignettes/diversity.html> 
+
+### ArchaeoSRP: An R Package for Extracting and Synthesizing Federal Cultural Resources Data for Research and Management
+
+**ArchaeoSRP**<https://github.com/seanbergin/archaeosrp/> 
+
+<https://www.cambridge.org/core/journals/advances-in-archaeological-practice/article/archaeosrp/92B9A22C434BABA191E76A1F3705AC53>
+
+### Refitting analysis
+**archaeofrag**<https://cran.r-project.org/web/packages/archeofrag/index.html> 
+
+## General R Resources
+
+The supply of resources for learning R is guaranteed to exceed your attention span. Generally speaking, I would suggest finding a few that you like, and using them as references rather than trying to read them all straight through. Here are a few to start with: 
+
+-	[R for Fledglings](https://www.uvm.edu/~tdonovan/RforFledglings/index.html) 
+-	[R Cookbook, 2nd Edition](https://rc2e.com/index.html) 
+-	[Fundamentals of Data Visualization](https://clauswilke.com/dataviz/) 
+-	[R for Data Science (2e)](https://r4ds.hadley.nz/) 
+
+
+
+# References

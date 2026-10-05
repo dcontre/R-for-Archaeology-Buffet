@@ -1,0 +1,2127 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Working with Count Data | An R-for-Archaeology Buffet</title>
+  <meta name="description" content="3 Working with Count Data | An R-for-Archaeology Buffet" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Working with Count Data | An R-for-Archaeology Buffet" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Working with Count Data | An R-for-Archaeology Buffet" />
+  
+  
+  
+
+<meta name="author" content="Daniel A. Contreras" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="building-more-complex-plots.html"/>
+<link rel="next" href="compositional-data.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="more-plotting.html"><a href="more-plotting.html"><i class="fa fa-check"></i><b>1</b> More Plotting</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="more-plotting.html"><a href="more-plotting.html#getting-cute-with-histograms-boxplots-and-rugs"><i class="fa fa-check"></i><b>1.1</b> Getting Cute with Histograms, Boxplots, and Rugs</a></li>
+<li class="chapter" data-level="1.2" data-path="more-plotting.html"><a href="more-plotting.html#boxplot-alternatives"><i class="fa fa-check"></i><b>1.2</b> Boxplot alternatives</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="building-more-complex-plots.html"><a href="building-more-complex-plots.html"><i class="fa fa-check"></i><b>2</b> Building more complex plots</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="building-more-complex-plots.html"><a href="building-more-complex-plots.html#multiple-plot-panes-in-base-r"><i class="fa fa-check"></i><b>2.1</b> Multiple plot panes in Base R</a></li>
+<li class="chapter" data-level="2.2" data-path="building-more-complex-plots.html"><a href="building-more-complex-plots.html#multiple-plot-panes-in-ggplot2"><i class="fa fa-check"></i><b>2.2</b> Multiple plot panes in <strong>ggplot2</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="count-data.html"><a href="count-data.html"><i class="fa fa-check"></i><b>3</b> Working with Count Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="count-data.html"><a href="count-data.html#frequency"><i class="fa fa-check"></i><b>3.1</b> Frequency</a></li>
+<li class="chapter" data-level="3.2" data-path="count-data.html"><a href="count-data.html#contingency-tables"><i class="fa fa-check"></i><b>3.2</b> Contingency Tables</a></li>
+<li class="chapter" data-level="3.3" data-path="count-data.html"><a href="count-data.html#diversity"><i class="fa fa-check"></i><b>3.3</b> Diversity measures</a></li>
+<li class="chapter" data-level="3.4" data-path="count-data.html"><a href="count-data.html#count-data-GLMs"><i class="fa fa-check"></i><b>3.4</b> Regression with count data using generalized linear models (GLMs)</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="compositional-data.html"><a href="compositional-data.html"><i class="fa fa-check"></i><b>4</b> Working with Compositional Data</a></li>
+<li class="chapter" data-level="5" data-path="resampling.html"><a href="resampling.html"><i class="fa fa-check"></i><b>5</b> Resampling Approaches</a></li>
+<li class="chapter" data-level="6" data-path="r-for-arch.html"><a href="r-for-arch.html"><i class="fa fa-check"></i><b>6</b> R for Archaeology resources</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="r-for-arch.html"><a href="r-for-arch.html#publications"><i class="fa fa-check"></i><b>6.1</b> Publications</a></li>
+<li class="chapter" data-level="6.2" data-path="r-for-arch.html"><a href="r-for-arch.html#online-materials"><i class="fa fa-check"></i><b>6.2</b> Online Materials</a></li>
+<li class="chapter" data-level="6.3" data-path="r-for-arch.html"><a href="r-for-arch.html#packages"><i class="fa fa-check"></i><b>6.3</b> Packages</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="r-for-arch.html"><a href="r-for-arch.html#working-with-zooarchaeological-data"><i class="fa fa-check"></i><b>6.3.1</b> Working with zooarchaeological data</a></li>
+<li class="chapter" data-level="6.3.2" data-path="r-for-arch.html"><a href="r-for-arch.html#working-with-radiocarbon-data"><i class="fa fa-check"></i><b>6.3.2</b> Working with radiocarbon data</a></li>
+<li class="chapter" data-level="6.3.3" data-path="r-for-arch.html"><a href="r-for-arch.html#working-with-chronological-data"><i class="fa fa-check"></i><b>6.3.3</b> Working with chronological data</a></li>
+<li class="chapter" data-level="6.3.4" data-path="r-for-arch.html"><a href="r-for-arch.html#working-with-archaeological-spatial-data-in-r"><i class="fa fa-check"></i><b>6.3.4</b> Working with archaeological spatial data in R</a></li>
+<li class="chapter" data-level="6.3.5" data-path="r-for-arch.html"><a href="r-for-arch.html#archaeological-data-available-in-r"><i class="fa fa-check"></i><b>6.3.5</b> Archaeological data available in R</a></li>
+<li class="chapter" data-level="6.3.6" data-path="r-for-arch.html"><a href="r-for-arch.html#visualizing-archaeological-data"><i class="fa fa-check"></i><b>6.3.6</b> Visualizing archaeological data</a></li>
+<li class="chapter" data-level="6.3.7" data-path="r-for-arch.html"><a href="r-for-arch.html#correspondence-analysis-in-r"><i class="fa fa-check"></i><b>6.3.7</b> Correspondence Analysis in R</a></li>
+<li class="chapter" data-level="6.3.8" data-path="r-for-arch.html"><a href="r-for-arch.html#diversity-indices-for-ecology"><i class="fa fa-check"></i><b>6.3.8</b> Diversity indices for ecology</a></li>
+<li class="chapter" data-level="6.3.9" data-path="r-for-arch.html"><a href="r-for-arch.html#archaeosrp-an-r-package-for-extracting-and-synthesizing-federal-cultural-resources-data-for-research-and-management"><i class="fa fa-check"></i><b>6.3.9</b> ArchaeoSRP: An R Package for Extracting and Synthesizing Federal Cultural Resources Data for Research and Management</a></li>
+<li class="chapter" data-level="6.3.10" data-path="r-for-arch.html"><a href="r-for-arch.html#refitting-analysis"><i class="fa fa-check"></i><b>6.3.10</b> Refitting analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="r-for-arch.html"><a href="r-for-arch.html#general-r-resources"><i class="fa fa-check"></i><b>6.4</b> General R Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An R-for-Archaeology Buffet</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="count-data" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Working with Count Data<a href="count-data.html#count-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Archaeological data are commonly counts - of projectile points of various types, of donkey and zebra teeth, of diagnostic sherds associated with distinct periods or cultural groups, etc. A fundamental archaeological task is the comparison of these counts across time and space. A wide variety of analytical methods of varying complexity are employed primarily to identify and interrogate patterning in such count data - but some simple exploration and visualization is almost always valuable as well.</p>
+<p>Some tools for working with count data, as well as sample data with which to work, can be found in Frerebeau’s <strong>tabula</strong> <span class="citation">(2019)</span>; not to be confused with the software tool for scraping data) and <strong>folio</strong> <span class="citation">(2025)</span> packages. The examples below are adapted from the <strong>tabula</strong> documentation.</p>
+<div id="frequency" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Frequency<a href="count-data.html#frequency" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A look at <code>?mississippi</code> will tell you that these are counts of ceramic types from 20 sites in the Lower Mississippi Valley <span class="citation">(Lipo, Madsen, and Dunnell 2015)</span>. These provide a useful example of archaeological count data (without necessarily entering into the theory and practice of seriation and arguments about cultural transmission).</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="count-data.html#cb23-1" tabindex="-1"></a><span class="fu">library</span>(tabula)</span>
+<span id="cb23-2"><a href="count-data.html#cb23-2" tabindex="-1"></a><span class="fu">library</span>(folio)</span>
+<span id="cb23-3"><a href="count-data.html#cb23-3" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="count-data.html#cb23-4" tabindex="-1"></a><span class="do">## Data from Lipo et al. 2015 in folio</span></span>
+<span id="cb23-5"><a href="count-data.html#cb23-5" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;mississippi&quot;</span>)</span>
+<span id="cb23-6"><a href="count-data.html#cb23-6" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="count-data.html#cb23-7" tabindex="-1"></a><span class="fu">kable</span>(mississippi) <span class="sc">%&gt;%</span> kableExtra<span class="sc">::</span><span class="fu">kable_classic</span>(<span class="at">full_width =</span> F)</span></code></pre></div>
+<table class=" lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+ParkinPunctate
+</th>
+<th style="text-align:right;">
+BartonKentMPI
+</th>
+<th style="text-align:right;">
+Painted
+</th>
+<th style="text-align:right;">
+FortuneNoded
+</th>
+<th style="text-align:right;">
+RanchIncised
+</th>
+<th style="text-align:right;">
+WallsEngraved
+</th>
+<th style="text-align:right;">
+WallaceIncised
+</th>
+<th style="text-align:right;">
+RhodesIncised
+</th>
+<th style="text-align:right;">
+VernonPaulApplique
+</th>
+<th style="text-align:right;">
+HullEngraved
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10-P-1
+</td>
+<td style="text-align:right;">
+39
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11-N-9
+</td>
+<td style="text-align:right;">
+528
+</td>
+<td style="text-align:right;">
+198
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11-N-1
+</td>
+<td style="text-align:right;">
+865
+</td>
+<td style="text-align:right;">
+323
+</td>
+<td style="text-align:right;">
+59
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11-O-10
+</td>
+<td style="text-align:right;">
+404
+</td>
+<td style="text-align:right;">
+208
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11-N-4
+</td>
+<td style="text-align:right;">
+764
+</td>
+<td style="text-align:right;">
+470
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-N-5
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-N-4
+</td>
+<td style="text-align:right;">
+71
+</td>
+<td style="text-align:right;">
+67
+</td>
+<td style="text-align:right;">
+96
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-N-16
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+56
+</td>
+<td style="text-align:right;">
+69
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-O-11
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-O-10
+</td>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+79
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-P-1
+</td>
+<td style="text-align:right;">
+244
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-P-8
+</td>
+<td style="text-align:right;">
+83
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+43
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-P-10
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-O-7
+</td>
+<td style="text-align:right;">
+590
+</td>
+<td style="text-align:right;">
+498
+</td>
+<td style="text-align:right;">
+67
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-O-5
+</td>
+<td style="text-align:right;">
+923
+</td>
+<td style="text-align:right;">
+637
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-N-21
+</td>
+<td style="text-align:right;">
+426
+</td>
+<td style="text-align:right;">
+69
+</td>
+<td style="text-align:right;">
+105
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12-O-5
+</td>
+<td style="text-align:right;">
+204
+</td>
+<td style="text-align:right;">
+156
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Holden Lake
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+294
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13-N-15
+</td>
+<td style="text-align:right;">
+728
+</td>
+<td style="text-align:right;">
+364
+</td>
+<td style="text-align:right;">
+160
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12-N-3
+</td>
+<td style="text-align:right;">
+549
+</td>
+<td style="text-align:right;">
+328
+</td>
+<td style="text-align:right;">
+77
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p>Archaeologists have been thinking about data like these for a <em>long</em> time (see <span class="citation">(McNutt 2005)</span> for a review)! The method implemented by <strong>tabula</strong> is derived from James A. Ford <span class="citation">(1962)</span>, but Ford and Willey were already producing similar graphics more than a decade earlier <span class="citation">(James Alfred Ford and Willey 1949)</span>, and Phillips, Ford, and Griffin devote a section (‘Seriation Analysis of Pottery Collections’ in <em>Archaeological Survey in the Lower Mississippi Valley, 1940–1947</em>) to this approach <span class="citation">(Phillips, Ford, and Griffin 1951, 217–36)</span>.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="count-data.html#cb24-1" tabindex="-1"></a><span class="do">## Ford diagram</span></span>
+<span id="cb24-2"><a href="count-data.html#cb24-2" tabindex="-1"></a><span class="fu">plot_ford</span>(mississippi)</span></code></pre></div>
+<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="contingency-tables" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Contingency Tables<a href="count-data.html#contingency-tables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Count data are the basis of contingency tables or cross-tabulations, which are the basis of <span class="math inline">\(\chi\)</span>-square analysis and many multivariate approaches. They can also be informative without further analysis.</p>
+<p>see Shennan <span class="citation">(1997, Ch.13)</span>
+see <span class="citation">(Lewis 1986)</span></p>
+<p>The <code>plot_spot()</code> and <code>plot_bertin()</code> functions are tools for visualizing these sorts of matrices (also, meet <code>|&gt;</code>, another pipe function like <code>%&gt;%</code>).</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="count-data.html#cb25-1" tabindex="-1"></a>mississippi <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="count-data.html#cb25-2" tabindex="-1"></a>  <span class="fu">plot_spot</span>(<span class="at">freq =</span> T)</span></code></pre></div>
+<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="count-data.html#cb26-1" tabindex="-1"></a>mississippi <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a href="count-data.html#cb26-2" tabindex="-1"></a>  <span class="fu">plot_bertin</span>(<span class="at">freq =</span> T, <span class="at">flip =</span> F, <span class="at">threshold =</span> mean)</span></code></pre></div>
+<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<p>The <code>occurence()</code> function produces a co-occurrence matrix, a sort of contingency table with the same variables on both axes.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="count-data.html#cb27-1" tabindex="-1"></a><span class="do">## Co-occurrence of ceramic types </span></span>
+<span id="cb27-2"><a href="count-data.html#cb27-2" tabindex="-1"></a>mississippi <span class="sc">|&gt;</span> </span>
+<span id="cb27-3"><a href="count-data.html#cb27-3" tabindex="-1"></a>  <span class="fu">occurrence</span>() </span></code></pre></div>
+<pre><code>##                    ParkinPunctate BartonKentMPI Painted FortuneNoded
+## BartonKentMPI                  20                                   
+## Painted                        20            20                     
+## FortuneNoded                   11            11      11             
+## RanchIncised                   17            17      17           11
+## WallsEngraved                  11            11      11            5
+## WallaceIncised                  7             7       7            7
+## RhodesIncised                  12            12      12            8
+## VernonPaulApplique              8             8       8            7
+## HullEngraved                    8             8       8            4
+##                    RanchIncised WallsEngraved WallaceIncised RhodesIncised
+## BartonKentMPI                                                             
+## Painted                                                                   
+## FortuneNoded                                                              
+## RanchIncised                                                              
+## WallsEngraved                10                                           
+## WallaceIncised                7             4                             
+## RhodesIncised                11             9              7              
+## VernonPaulApplique            8             4              6             7
+## HullEngraved                  6             7              3             7
+##                    VernonPaulApplique
+## BartonKentMPI                        
+## Painted                              
+## FortuneNoded                         
+## RanchIncised                         
+## WallsEngraved                        
+## WallaceIncised                       
+## RhodesIncised                        
+## VernonPaulApplique                   
+## HullEngraved                        4</code></pre>
+<p>These can also be visualized using <code>plot_spot()</code>.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="count-data.html#cb29-1" tabindex="-1"></a>mississippi <span class="sc">|&gt;</span> </span>
+<span id="cb29-2"><a href="count-data.html#cb29-2" tabindex="-1"></a>  <span class="fu">occurrence</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb29-3"><a href="count-data.html#cb29-3" tabindex="-1"></a>  <span class="fu">plot_spot</span>()</span></code></pre></div>
+<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="diversity" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Diversity measures<a href="count-data.html#diversity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>See Baxter 2001 <span class="citation">(M. J. Baxter 2001)</span>
+Carlson <span class="citation">(2017, Ch.18)</span></p>
+<ul>
+<li>“The simplest measure of diversity, richness is just the number of types in an assemblage” (p399)
+<ul>
+<li>“…richness is usually correlated with assemblage size”</li>
+</ul></li>
+<li>“The transpose of richness is ubiquity, which is just the number of assemblages that contain a particular type” (p400)</li>
+<li>” More types indicate a more diverse assemblage, but
+among assemblages with the same number of types, those with the same number of artifacts in each type are more diverse than assemblages having a dominant type with the remaining types having very few specimens.” (p400)</li>
+</ul>
+<blockquote>
+<p>Shannon diversity measure (also called Shannon’s information index, Shannon–Weaver, or Shannon–Wiener). The measure comes from a
+1948 paper by Claude Shannon who developed information entropy as a measure of uncertainty using concepts developed by Norbert Wiener. Shannon’s work was later popularized by Warren Weaver. The measure increases when there is more uncertainty in predicting what type a randomly selected artifact will be. High diversity (entropy) means that there are more types and the artifacts are spread more evenly over the types…</p>
+</blockquote>
+<p>The Shannon index is calculated by assessing the relative proportion of each type in a sample:</p>
+<p><span class="math display">\[H&#39;=-\sum_{i=1}^{S}{p_i\ln{}p_i}\]</span>
+<em>H’</em> is the Shannon index, calculated by iterating through each (<span class="math inline">\(i^{th}\)</span>) type in the sample and multiplying the proportion of the sample represented by that type <span class="math inline">\(p_i\)</span> by the natural log of that proportion (<span class="math inline">\(\ln{}p_i\)</span>); <em>S</em> is the total number of types (“species”, as originally formulated, since this was developed as an ecological measure).</p>
+<p>Other indices are available, e.g. the Simpson index, which calculates how likely it is that two randomly drawn individuals will be of different types. The Simpson index (<span class="math inline">\(D_1\)</span>) is calculated by iterating through the sample, squaring the proportion of each type and summing them.</p>
+<p><span class="math display">\[D_1=\sum_{i=1}^{S}{p_i}^2\]</span>
+The inverse of the Simpson index provides the <em>effective number of species</em>, which is the number of species/types that <em>if evenly distributed</em> would produce a similar diversity index. In effect it assesses the observed diversity but downweights or even discounts types that occur only rarely.</p>
+<p>The <strong>vegan</strong> package provides a straightforward tool - <code>diversity()</code> - for calculating multiple diversity indices. We can test those using the ‘cantabria’ dataset - counts of forty-four distinct design elements on engraved bones from five Lower Magdalenian sites in northern Spain (Cantabria) - originally published by Conkey <span class="citation">(1980)</span> and included in the <strong>tabula</strong> package.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="count-data.html#cb30-1" tabindex="-1"></a><span class="do">## Data from Conkey 1980, Kintigh 1989, p. 28</span></span>
+<span id="cb30-2"><a href="count-data.html#cb30-2" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;cantabria&quot;</span>, <span class="at">package =</span> <span class="st">&quot;tabula&quot;</span>)</span>
+<span id="cb30-3"><a href="count-data.html#cb30-3" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="count-data.html#cb30-4" tabindex="-1"></a><span class="fu">kable</span>(cantabria) <span class="sc">%&gt;%</span> kableExtra<span class="sc">::</span><span class="fu">kable_classic</span>(<span class="at">full_width =</span> F)</span></code></pre></div>
+<table class=" lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+X1
+</th>
+<th style="text-align:right;">
+X2
+</th>
+<th style="text-align:right;">
+X3
+</th>
+<th style="text-align:right;">
+X4
+</th>
+<th style="text-align:right;">
+X5
+</th>
+<th style="text-align:right;">
+X6
+</th>
+<th style="text-align:right;">
+X7
+</th>
+<th style="text-align:right;">
+X8
+</th>
+<th style="text-align:right;">
+X9
+</th>
+<th style="text-align:right;">
+X10
+</th>
+<th style="text-align:right;">
+X11
+</th>
+<th style="text-align:right;">
+X12
+</th>
+<th style="text-align:right;">
+X13
+</th>
+<th style="text-align:right;">
+X14
+</th>
+<th style="text-align:right;">
+X15
+</th>
+<th style="text-align:right;">
+X16
+</th>
+<th style="text-align:right;">
+X17
+</th>
+<th style="text-align:right;">
+X18
+</th>
+<th style="text-align:right;">
+X19
+</th>
+<th style="text-align:right;">
+X20
+</th>
+<th style="text-align:right;">
+X21
+</th>
+<th style="text-align:right;">
+X22
+</th>
+<th style="text-align:right;">
+X23
+</th>
+<th style="text-align:right;">
+X24
+</th>
+<th style="text-align:right;">
+X25
+</th>
+<th style="text-align:right;">
+X26
+</th>
+<th style="text-align:right;">
+X27
+</th>
+<th style="text-align:right;">
+X28
+</th>
+<th style="text-align:right;">
+X29
+</th>
+<th style="text-align:right;">
+X30
+</th>
+<th style="text-align:right;">
+X31
+</th>
+<th style="text-align:right;">
+X32
+</th>
+<th style="text-align:right;">
+X33
+</th>
+<th style="text-align:right;">
+X34
+</th>
+<th style="text-align:right;">
+X35
+</th>
+<th style="text-align:right;">
+X36
+</th>
+<th style="text-align:right;">
+X37
+</th>
+<th style="text-align:right;">
+X38
+</th>
+<th style="text-align:right;">
+X39
+</th>
+<th style="text-align:right;">
+X40
+</th>
+<th style="text-align:right;">
+X41
+</th>
+<th style="text-align:right;">
+X42
+</th>
+<th style="text-align:right;">
+X43
+</th>
+<th style="text-align:right;">
+X44
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Altamira
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cueto de la Mina
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+El Juyo
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+El Cierro
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+La Paloma
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="count-data.html#cb31-1" tabindex="-1"></a><span class="fu">library</span>(vegan)</span></code></pre></div>
+<pre><code>## Loading required package: permute</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## This is vegan 2.6-8</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="count-data.html#cb35-1" tabindex="-1"></a><span class="fu">diversity</span>(cantabria, <span class="at">index =</span> <span class="st">&quot;shannon&quot;</span>)</span></code></pre></div>
+<pre><code>##         Altamira Cueto de la Mina          El Juyo        El Cierro 
+##         3.269200         2.955298         2.491683         2.485604 
+##        La Paloma 
+##         2.329187</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="count-data.html#cb37-1" tabindex="-1"></a><span class="fu">diversity</span>(cantabria, <span class="at">index =</span> <span class="st">&quot;simpson&quot;</span>)</span></code></pre></div>
+<pre><code>##         Altamira Cueto de la Mina          El Juyo        El Cierro 
+##        0.9506579        0.9283764        0.8814525        0.8979592 
+##        La Paloma 
+##        0.8884688</code></pre>
+<p>How can we interpret the numbers that result? These are index values, which is to say that they don’t mean much in isolation, but can be usefully compared to one another. That is, both Shannon and Simpson indices suggest that diversity of design elements on engraved bones is higher at Altamira than elsewhere.</p>
+<p>These indices, and a few others, are also implemented in the <strong>tabula</strong> package with the <code>heterogeneity()</code> function.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="count-data.html#cb39-1" tabindex="-1"></a><span class="do">## Measure diversity by comparing to simulated assemblages (after Kintigh 1989)</span></span>
+<span id="cb39-2"><a href="count-data.html#cb39-2" tabindex="-1"></a>cantabria <span class="sc">|&gt;</span></span>
+<span id="cb39-3"><a href="count-data.html#cb39-3" tabindex="-1"></a>  <span class="fu">heterogeneity</span>(<span class="at">method =</span> <span class="st">&quot;shannon&quot;</span>) </span></code></pre></div>
+<pre><code>## [1] 3.269200 2.955298 2.491683 2.485604 2.329187</code></pre>
+<p>In fact diversity measures are really a can of worms; see Erin &amp; Buchanan 2022, and especially the Colwell &amp; Chao chapter <span class="citation">(Colwell and Chao 2022)</span>. The fundamental issue is how to compare diversity between assemblages with different sample sizes - which is usually exactly what we’d like to compare. Are larger samples are more likely to capture more diversity, making them hard to compare to smaller samples? How much attention should we pay to rare species/types?</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="count-data.html#cb41-1" tabindex="-1"></a><span class="do">## Measure diversity by comparing to simulated assemblages (after Kintigh 1989)</span></span>
+<span id="cb41-2"><a href="count-data.html#cb41-2" tabindex="-1"></a>cantabria <span class="sc">|&gt;</span></span>
+<span id="cb41-3"><a href="count-data.html#cb41-3" tabindex="-1"></a>  <span class="fu">heterogeneity</span>(<span class="at">method =</span> <span class="st">&quot;shannon&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb41-4"><a href="count-data.html#cb41-4" tabindex="-1"></a>  <span class="fu">simulate</span>(<span class="at">seed =</span> <span class="dv">42</span>) <span class="sc">|&gt;</span></span>
+<span id="cb41-5"><a href="count-data.html#cb41-5" tabindex="-1"></a>  <span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>See Baxter <span class="citation">(2001, 718–21)</span>, who reexamines <span class="citation">(Kintigh 1984; Kaufman 1998)</span> and concludes that bootstrapping provides a more reliable means of comparing richnesss. What kind of resampling does <code>tabula::simulate()</code> implement?</p>
+<blockquote>
+<p>The data are given in Kaufman (1998) in the form of a 44 x 5 table where columns correspond to different Early Magdalenian sites in Cantabrian Spain and rows to design elements on engraved bone artifacts. Entries in the original table correspond to counts of design elements from each site. The five sites Altamira (A), Cueto de la Mina (CM), El Juyo (EJ), El Cierro (EC), and La Paloma (LP) differ in their apparent richness, but also in terms of sample size. Altamira, with tty = 152 and Sj = 38, is apparently the richest, but there has been some debate about whether this is a real phenomenon or an effect of sample size (Kaufman 1998; Rhode 1988). In particular, it is of interest to know if Altamira is genuinely richer than Cueto de la Mina, which has a lower Sj = 27 but also lower ^ = 69, since different methods have suggested apparently different answers to this question (Kaufman 1998).</p>
+</blockquote>
+<p>We can replicate Baxter’s <span class="citation">(2001)</span> Figure 2 - but Baxter uses that figure to illustrate some shortcomings of the simulation method that produces it.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="count-data.html#cb42-1" tabindex="-1"></a>cantabria <span class="sc">|&gt;</span></span>
+<span id="cb42-2"><a href="count-data.html#cb42-2" tabindex="-1"></a>  <span class="fu">richness</span>(<span class="at">method =</span> <span class="st">&quot;count&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb42-3"><a href="count-data.html#cb42-3" tabindex="-1"></a>  <span class="fu">simulate</span>(<span class="at">seed =</span> <span class="dv">42</span>) <span class="sc">|&gt;</span></span>
+<span id="cb42-4"><a href="count-data.html#cb42-4" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">log =</span> <span class="st">&quot;&quot;</span>, <span class="at">pch =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) </span>
+<span id="cb42-5"><a href="count-data.html#cb42-5" tabindex="-1"></a><span class="fu">text</span>(<span class="at">y =</span> <span class="fu">richness</span>(cantabria, <span class="at">method =</span> <span class="st">&quot;count&quot;</span>), <span class="at">x =</span> <span class="fu">rowSums</span>(cantabria),</span>
+<span id="cb42-6"><a href="count-data.html#cb42-6" tabindex="-1"></a>       <span class="at">labels =</span> <span class="fu">rownames</span>(cantabria), <span class="at">adj =</span> <span class="dv">0</span>, <span class="at">pos =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-24-1.png" width="768" /></p>
+</div>
+<div id="count-data-GLMs" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Regression with count data using generalized linear models (GLMs)<a href="count-data.html#count-data-GLMs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Linear regression (Drennan, Ch.15), it turns out, is not the only way to explore the relationship between numerical variables. Worryingly for archaeologists, linear regression turns out to behave demonstrably poorly with count data <span class="citation">(Codding and Brewer 2024; Grant S. McCall and Villafranca 2024)</span>, which are of course very common in archaeology (archaeologists love counting things almost as much as they love classifying them). The problem lies in the way that linear regression assesses goodness-of-fit, which is through ordinary least squares (OLS). One of the assumptions of OLS is that values are reasonably normally distributed, which holds for measurements (e.g., projectile point lengths), but not for counts - counts of, e.g., sherds of various types across strata tend to have more small values than large values, and tend to include zeroes. A normal distribution, as a result, is a relatively poor approximation of their distribution. So, why use one, historically? As with other parametric statistics, there are practical reasons: assumptions of normality made it possible to use less computationally intensive methods. Only in the 21st century has sufficient computing power become widely available to make GLMs a viable alternative (see <span class="citation">(Grant S. McCall and Villafranca 2024, 3–9)</span> for a brief history).</p>
+<blockquote>
+<p>…count regression does a better job [than linear or log-linear regression] of inferring the underlying relationship between <em>x</em> and <em>y</em>, which is the goal of applying regression to answer archaeological questions in the first place. <span class="citation">(Codding and Brewer 2024, 164)</span></p>
+</blockquote>
+<p>Codding and Brewer <span class="citation">(2024, fig. 1)</span> illustrate the distinctions between linear, log-linear, and Poisson regression using a toy dataset of counts of obsidian artifacts across 12 archaeological sites at varying distances from an obsidian source. Reproducing their Figure 1 illustrates both how to implement these methods and their shortcomings.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="count-data.html#cb43-1" tabindex="-1"></a>obsid_sites <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">dist.km =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">8</span>, <span class="dv">19</span>, <span class="dv">20</span>, <span class="dv">20</span>, <span class="dv">22</span>, <span class="dv">27</span>, <span class="dv">33</span>, <span class="dv">37</span>, <span class="dv">40</span>, <span class="dv">46</span>, <span class="dv">62</span>),</span>
+<span id="cb43-2"><a href="count-data.html#cb43-2" tabindex="-1"></a>           <span class="at">artifact.count =</span> <span class="fu">c</span>(<span class="dv">17</span>, <span class="dv">19</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb43-3"><a href="count-data.html#cb43-3" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="count-data.html#cb43-4" tabindex="-1"></a>lm.obsid <span class="ot">&lt;-</span> <span class="fu">lm</span>(artifact.count <span class="sc">~</span> dist.km, obsid_sites)</span>
+<span id="cb43-5"><a href="count-data.html#cb43-5" tabindex="-1"></a><span class="fu">summary</span>(lm.obsid)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = artifact.count ~ dist.km, data = obsid_sites)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.7532 -2.1826 -0.7776  2.3661  6.9018 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 14.32818    2.32247   6.169 0.000106 ***
+## dist.km     -0.27875    0.07206  -3.868 0.003118 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.947 on 10 degrees of freedom
+## Multiple R-squared:  0.5994, Adjusted R-squared:  0.5594 
+## F-statistic: 14.96 on 1 and 10 DF,  p-value: 0.003118</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="count-data.html#cb45-1" tabindex="-1"></a>obsid_sites<span class="sc">$</span>predicted <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">fitted</span>(lm.obsid), <span class="dv">2</span>)</span>
+<span id="cb45-2"><a href="count-data.html#cb45-2" tabindex="-1"></a>obsid_sites<span class="sc">$</span>residual <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">residuals</span>(lm.obsid), <span class="dv">2</span>)</span>
+<span id="cb45-3"><a href="count-data.html#cb45-3" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="count-data.html#cb45-4" tabindex="-1"></a><span class="co"># log response variable</span></span>
+<span id="cb45-5"><a href="count-data.html#cb45-5" tabindex="-1"></a>obsid_sites<span class="sc">$</span>log_count <span class="ot">&lt;-</span> <span class="fu">log</span>(obsid_sites<span class="sc">$</span>artifact.count)</span>
+<span id="cb45-6"><a href="count-data.html#cb45-6" tabindex="-1"></a>lm.logobsid <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(artifact.count) <span class="sc">~</span> dist.km, obsid_sites)</span>
+<span id="cb45-7"><a href="count-data.html#cb45-7" tabindex="-1"></a><span class="fu">summary</span>(lm.logobsid)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(artifact.count) ~ dist.km, data = obsid_sites)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.24495 -0.15747  0.08201  0.41793  0.75527 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2.73231    0.39836   6.859 4.41e-05 ***
+## dist.km     -0.04507    0.01236  -3.647  0.00449 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.6771 on 10 degrees of freedom
+## Multiple R-squared:  0.5708, Adjusted R-squared:  0.5278 
+## F-statistic:  13.3 on 1 and 10 DF,  p-value: 0.004488</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="count-data.html#cb47-1" tabindex="-1"></a>obsid_sites<span class="sc">$</span>logpredicted <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">fitted</span>(lm.logobsid), <span class="dv">2</span>)</span>
+<span id="cb47-2"><a href="count-data.html#cb47-2" tabindex="-1"></a>obsid_sites<span class="sc">$</span>logresidual <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">residuals</span>(lm.logobsid), <span class="dv">2</span>)</span></code></pre></div>
+<p>Calculate Poisson GLM (Poisson refers to the error distribution).</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="count-data.html#cb48-1" tabindex="-1"></a>glm_Pois.obsid_count <span class="ot">&lt;-</span> <span class="fu">glm</span>(artifact.count <span class="sc">~</span> dist.km,</span>
+<span id="cb48-2"><a href="count-data.html#cb48-2" tabindex="-1"></a><span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>),</span>
+<span id="cb48-3"><a href="count-data.html#cb48-3" tabindex="-1"></a><span class="at">data =</span> obsid_sites</span>
+<span id="cb48-4"><a href="count-data.html#cb48-4" tabindex="-1"></a>)</span>
+<span id="cb48-5"><a href="count-data.html#cb48-5" tabindex="-1"></a><span class="fu">summary</span>(glm_Pois.obsid_count)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = artifact.count ~ dist.km, family = poisson(link = &quot;log&quot;), 
+##     data = obsid_sites)
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  3.060452   0.194172  15.762  &lt; 2e-16 ***
+## dist.km     -0.053317   0.009087  -5.867 4.43e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 54.243  on 11  degrees of freedom
+## Residual deviance: 13.195  on 10  degrees of freedom
+## AIC: 57.543
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="count-data.html#cb50-1" tabindex="-1"></a>obsid_sites<span class="sc">$</span>glmpredicted <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">fitted</span>(glm_Pois.obsid_count), <span class="dv">2</span>)</span>
+<span id="cb50-2"><a href="count-data.html#cb50-2" tabindex="-1"></a>obsid_sites<span class="sc">$</span>glmresidual <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">residuals</span>(glm_Pois.obsid_count), <span class="dv">2</span>)</span></code></pre></div>
+<p>Plot all three.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="count-data.html#cb51-1" tabindex="-1"></a><span class="co">#linear regression</span></span>
+<span id="cb51-2"><a href="count-data.html#cb51-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>), <span class="at">pty =</span> <span class="st">&quot;s&quot;</span>)</span>
+<span id="cb51-3"><a href="count-data.html#cb51-3" tabindex="-1"></a><span class="fu">plot</span>(obsid_sites<span class="sc">$</span>artifact.count <span class="sc">~</span> obsid_sites<span class="sc">$</span>dist.km, <span class="at">xlab =</span> <span class="st">&quot;Distance (km)&quot;</span>, </span>
+<span id="cb51-4"><a href="count-data.html#cb51-4" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Artifact count&quot;</span>, <span class="at">las =</span> <span class="dv">1</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">65</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">20</span>),</span>
+<span id="cb51-5"><a href="count-data.html#cb51-5" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Linear&quot;</span>)</span>
+<span id="cb51-6"><a href="count-data.html#cb51-6" tabindex="-1"></a><span class="fu">abline</span>(lm.obsid, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb51-7"><a href="count-data.html#cb51-7" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb51-8"><a href="count-data.html#cb51-8" tabindex="-1"></a><span class="fu">matlines</span>(<span class="fu">t</span>(<span class="fu">cbind</span>(obsid_sites<span class="sc">$</span>dist.km, obsid_sites<span class="sc">$</span>dist.km)), </span>
+<span id="cb51-9"><a href="count-data.html#cb51-9" tabindex="-1"></a>         <span class="fu">t</span>(<span class="fu">cbind</span>(obsid_sites[,<span class="dv">3</span>], obsid_sites[,<span class="dv">3</span>] <span class="sc">+</span> obsid_sites[,<span class="dv">4</span>])), </span>
+<span id="cb51-10"><a href="count-data.html#cb51-10" tabindex="-1"></a>         <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb51-11"><a href="count-data.html#cb51-11" tabindex="-1"></a></span>
+<span id="cb51-12"><a href="count-data.html#cb51-12" tabindex="-1"></a></span>
+<span id="cb51-13"><a href="count-data.html#cb51-13" tabindex="-1"></a><span class="co">#log-linear regression</span></span>
+<span id="cb51-14"><a href="count-data.html#cb51-14" tabindex="-1"></a><span class="co">#here we take the results of the log-linear regression and transform them back into counts </span></span>
+<span id="cb51-15"><a href="count-data.html#cb51-15" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">exp</span>(obsid_sites<span class="sc">$</span>log_count) <span class="sc">~</span> obsid_sites<span class="sc">$</span>dist.km, <span class="at">xlab =</span> <span class="st">&quot;Distance (km)&quot;</span>, </span>
+<span id="cb51-16"><a href="count-data.html#cb51-16" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;log(count)&quot;</span>, <span class="at">las =</span> <span class="dv">1</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">65</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">20</span>),</span>
+<span id="cb51-17"><a href="count-data.html#cb51-17" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Log-response linear&quot;</span>)</span>
+<span id="cb51-18"><a href="count-data.html#cb51-18" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">65</span>, <span class="at">by =</span> <span class="dv">1</span>), <span class="fu">exp</span>(<span class="fu">predict</span>(lm.logobsid, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">dist.km =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">65</span>, <span class="at">by =</span> <span class="dv">1</span>)))), </span>
+<span id="cb51-19"><a href="count-data.html#cb51-19" tabindex="-1"></a>                                 <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb51-20"><a href="count-data.html#cb51-20" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb51-21"><a href="count-data.html#cb51-21" tabindex="-1"></a><span class="fu">matlines</span>(<span class="fu">t</span>(<span class="fu">cbind</span>(obsid_sites<span class="sc">$</span>dist.km, obsid_sites<span class="sc">$</span>dist.km)), </span>
+<span id="cb51-22"><a href="count-data.html#cb51-22" tabindex="-1"></a>         <span class="fu">t</span>(<span class="fu">cbind</span>(<span class="fu">exp</span>(obsid_sites[,<span class="dv">6</span>]), <span class="fu">exp</span>(obsid_sites[,<span class="dv">6</span>] <span class="sc">+</span> obsid_sites[,<span class="dv">7</span>]))), </span>
+<span id="cb51-23"><a href="count-data.html#cb51-23" tabindex="-1"></a>         <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb51-24"><a href="count-data.html#cb51-24" tabindex="-1"></a></span>
+<span id="cb51-25"><a href="count-data.html#cb51-25" tabindex="-1"></a></span>
+<span id="cb51-26"><a href="count-data.html#cb51-26" tabindex="-1"></a><span class="co"># poisson regression</span></span>
+<span id="cb51-27"><a href="count-data.html#cb51-27" tabindex="-1"></a></span>
+<span id="cb51-28"><a href="count-data.html#cb51-28" tabindex="-1"></a><span class="fu">plot</span>(obsid_sites<span class="sc">$</span>artifact.count <span class="sc">~</span> obsid_sites<span class="sc">$</span>dist.km, <span class="at">xlab =</span> <span class="st">&quot;Distance (km)&quot;</span>, </span>
+<span id="cb51-29"><a href="count-data.html#cb51-29" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;log(count)&quot;</span>, <span class="at">las =</span> <span class="dv">1</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">65</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">20</span>),</span>
+<span id="cb51-30"><a href="count-data.html#cb51-30" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Poisson&quot;</span>)</span>
+<span id="cb51-31"><a href="count-data.html#cb51-31" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb51-32"><a href="count-data.html#cb51-32" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">exp</span>(art_pred<span class="sc">$</span>fit)<span class="sc">~</span> dist_seq, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb51-33"><a href="count-data.html#cb51-33" tabindex="-1"></a><span class="fu">matlines</span>(<span class="fu">t</span>(<span class="fu">cbind</span>(obsid_sites<span class="sc">$</span>dist.km, obsid_sites<span class="sc">$</span>dist.km)), </span>
+<span id="cb51-34"><a href="count-data.html#cb51-34" tabindex="-1"></a>         <span class="fu">t</span>(<span class="fu">cbind</span>(obsid_sites[,<span class="dv">8</span>], obsid_sites[,<span class="dv">8</span>] <span class="sc">-</span> (obsid_sites[,<span class="dv">8</span>] <span class="sc">-</span> obsid_sites[,<span class="dv">2</span>]))), </span>
+<span id="cb51-35"><a href="count-data.html#cb51-35" tabindex="-1"></a>         <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>As Codding and Brewer <span class="citation">(2024, 164)</span> point out, the linear regression, which estimates fit using ordinary least squares, “underpredicts both high values…and low values…including predicting counts below zero”, while logging the response variable before performing a linear regression “does avoid predicting values below zero…but the model still underestimates high values at sites close to the volcanic source”. The GLM “does a good job of predicting high counts at sites close to the source…and does not predict counts below zero”. In other words, the GLM is the best suited of the three for making predictions about unknown values of <em>y</em> given values of <em>x</em> (though we should always be careful about this outside of the range of observed values of <em>x</em>). More profoundly, the GLM may give us some insight into how <em>x</em> and <em>y</em> are related…which may enable us to (re)examine our ideas about <em>why</em> they are related.</p>
+<!-- Why is the goodness of fit lower for the log-linear regression, if it avoid some of the problems of the linear outlined here? In the case of the Poisson regression, is *AIC* different enough from $r^{2}$ that superficially similar values are not actually similar? Does our measure of goodness of fit fail to capture the kinds of problems (or avoidance thereof) that Codding and Brewer describe?  -->
+<p>For additional examples, including not only Poisson regression but also other GLMs (negative binomial regression, count regression with variable sampling windows, and count regression with multiple predictors) see Codding and Brewer <span class="citation">(2024)</span>. Sample data and R code are available in the <a href="https://doi.org/10.48512/XCV8494446">supplement</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="building-more-complex-plots.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="compositional-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": false,
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
