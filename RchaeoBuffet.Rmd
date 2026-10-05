@@ -18,7 +18,7 @@ library(kableExtra)
 
 # Introduction 
 
-This document compiles useful approaches, tips, and tricks for using R with archaeological data. Example data used are from Drennan [-@Drennan2009] unless otherwise specified. This is a smorgasbord, *not* an introduction to analytical methods. For data manipulation, see [Data Wrangling for Archaeology](https://dcontre.github.io/Rchaeology/introduction.html). 
+This document compiles useful approaches, tips, and tricks for using R with archaeological data. Example data used are from Drennan [-@Drennan_2009] unless otherwise specified. This is a smorgasbord, *not* an introduction to analytical methods. For data manipulation, see [Data Wrangling for Archaeology](https://dcontre.github.io/Rchaeology/introduction.html). 
 
 [//]:
 (
