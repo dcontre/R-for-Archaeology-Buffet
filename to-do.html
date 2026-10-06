@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3 Building more complex plots | An R-for-Archaeology Buffet</title>
-  <meta name="description" content="3 Building more complex plots | An R-for-Archaeology Buffet" />
+  <title>To do | An R-for-Archaeology Buffet</title>
+  <meta name="description" content="To do | An R-for-Archaeology Buffet" />
   <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3 Building more complex plots | An R-for-Archaeology Buffet" />
+  <meta property="og:title" content="To do | An R-for-Archaeology Buffet" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Building more complex plots | An R-for-Archaeology Buffet" />
+  <meta name="twitter:title" content="To do | An R-for-Archaeology Buffet" />
   
   
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="more-plotting.html"/>
-<link rel="next" href="count-data.html"/>
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="more-plotting.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -222,75 +222,81 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="building-more-complex-plots" class="section level1 hasAnchor" number="3">
-<h1><span class="header-section-number">3</span> Building more complex plots<a href="building-more-complex-plots.html#building-more-complex-plots" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="multiple-plot-panes-in-base-r" class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> Multiple plot panes in Base R<a href="building-more-complex-plots.html#multiple-plot-panes-in-base-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>What if we wanted to, for example, compare boxplot and violin plot side-by-side? The simplest way to juxtapose plots is to adjust the <code>mfrow</code> parameter of your graphics pane (if you’re working in the console rather than knitting R Markdown, this will keep the new setting until you reset it using <code>dev.off()</code>).</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="building-more-complex-plots.html#cb17-1" tabindex="-1"></a><span class="co">#set the mfrow parameter in par() to one rows and two columns</span></span>
-<span id="cb17-2"><a href="building-more-complex-plots.html#cb17-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow  =</span>  <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))  </span>
-<span id="cb17-3"><a href="building-more-complex-plots.html#cb17-3" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="building-more-complex-plots.html#cb17-4" tabindex="-1"></a><span class="fu">boxplot</span>(Area <span class="sc">~</span> Period, nanxiong, <span class="at">ylab =</span> <span class="st">&quot;Area (ha)&quot;</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;lightgreen&quot;</span>, <span class="st">&quot;salmon&quot;</span>))</span>
-<span id="cb17-5"><a href="building-more-complex-plots.html#cb17-5" tabindex="-1"></a><span class="fu">vioplot</span>(Area <span class="sc">~</span> Period, nanxiong, <span class="at">ylab =</span> <span class="st">&quot;Area (ha)&quot;</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;lightgreen&quot;</span>, <span class="st">&quot;salmon&quot;</span>))</span></code></pre></div>
-<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="building-more-complex-plots.html#cb18-1" tabindex="-1"></a><span class="co">#or vertically instead</span></span>
-<span id="cb18-2"><a href="building-more-complex-plots.html#cb18-2" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="building-more-complex-plots.html#cb18-3" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow  =</span>  <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))  </span>
-<span id="cb18-4"><a href="building-more-complex-plots.html#cb18-4" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="building-more-complex-plots.html#cb18-5" tabindex="-1"></a><span class="fu">boxplot</span>(Area <span class="sc">~</span> Period, nanxiong, <span class="at">ylab =</span> <span class="st">&quot;Area (ha)&quot;</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;lightgreen&quot;</span>, <span class="st">&quot;salmon&quot;</span>), <span class="at">title =</span> <span class="st">&quot;Boxplot&quot;</span>)</span>
-<span id="cb18-6"><a href="building-more-complex-plots.html#cb18-6" tabindex="-1"></a><span class="fu">vioplot</span>(Area <span class="sc">~</span> Period, nanxiong, <span class="at">ylab =</span> <span class="st">&quot;Area (ha)&quot;</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;lightgreen&quot;</span>, <span class="st">&quot;salmon&quot;</span>))</span></code></pre></div>
-<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="building-more-complex-plots.html#cb19-1" tabindex="-1"></a><span class="co"># dev.off()</span></span></code></pre></div>
-<p>Note that you may rapidly bump up against problems caused by the default graphics settings, which don’t always allocate space as you’d like for multiple panes. Very often you might like to limit the amount of white space between plots (allowing them to be larger); experiment with <code>par(mar =)</code> to do this (see <code>?par</code>).</p>
-<p>There’s no reason to limit yourself to two panes - <code>mfrow(c(3,3))</code> will give you three of each, for instance. Multiple panes exploring multiple permutations of variables are common, though they do risk becoming too complex for viewers to digest.</p>
-</div>
-<div id="multiple-plot-panes-in-ggplot2" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Multiple plot panes in <strong>ggplot2</strong><a href="building-more-complex-plots.html#multiple-plot-panes-in-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Thomas Lin Pedersen’s <a href="https://patchwork.data-imaginist.com/"><strong>patchwork</strong> package</a> enables something similar for <strong>ggplot2</strong> graphics - and does so well enough to constitute an argument for using ggplot.</p>
-<p>To use it, write the output of your plots to objects, then combine those.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="building-more-complex-plots.html#cb20-1" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb20-2"><a href="building-more-complex-plots.html#cb20-2" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="building-more-complex-plots.html#cb20-3" tabindex="-1"></a>p_viol <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> nanxiong, <span class="fu">aes</span>(<span class="at">x =</span> Period, <span class="at">y =</span> Area, <span class="at">fill =</span> Period)) <span class="sc">+</span></span>
-<span id="cb20-4"><a href="building-more-complex-plots.html#cb20-4" tabindex="-1"></a>    <span class="fu">geom_violin</span>(<span class="at">width=</span><span class="fl">1.4</span>) <span class="sc">+</span></span>
-<span id="cb20-5"><a href="building-more-complex-plots.html#cb20-5" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> .<span class="dv">5</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(.<span class="dv">1</span>), <span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb20-6"><a href="building-more-complex-plots.html#cb20-6" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb20-7"><a href="building-more-complex-plots.html#cb20-7" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
-<span id="cb20-8"><a href="building-more-complex-plots.html#cb20-8" tabindex="-1"></a>      <span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>,</span>
-<span id="cb20-9"><a href="building-more-complex-plots.html#cb20-9" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>)</span>
-<span id="cb20-10"><a href="building-more-complex-plots.html#cb20-10" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb20-11"><a href="building-more-complex-plots.html#cb20-11" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Area (ha)&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Nanxiong Bornze Age Site Areas&quot;</span>,</span>
-<span id="cb20-12"><a href="building-more-complex-plots.html#cb20-12" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="st">&quot;Violinplot + jittered points</span><span class="sc">\n</span><span class="st">...with ggplot&quot;</span>)</span>
-<span id="cb20-13"><a href="building-more-complex-plots.html#cb20-13" tabindex="-1"></a></span>
-<span id="cb20-14"><a href="building-more-complex-plots.html#cb20-14" tabindex="-1"></a>p_box <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> nanxiong, <span class="fu">aes</span>(<span class="at">x =</span> Period, <span class="at">y =</span> Area, <span class="at">fill =</span> Period)) <span class="sc">+</span></span>
-<span id="cb20-15"><a href="building-more-complex-plots.html#cb20-15" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">width=</span><span class="fl">0.1</span>, <span class="at">color=</span><span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
-<span id="cb20-16"><a href="building-more-complex-plots.html#cb20-16" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> .<span class="dv">5</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(.<span class="dv">1</span>), <span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb20-17"><a href="building-more-complex-plots.html#cb20-17" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb20-18"><a href="building-more-complex-plots.html#cb20-18" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
-<span id="cb20-19"><a href="building-more-complex-plots.html#cb20-19" tabindex="-1"></a>      <span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>,</span>
-<span id="cb20-20"><a href="building-more-complex-plots.html#cb20-20" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>)</span>
-<span id="cb20-21"><a href="building-more-complex-plots.html#cb20-21" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb20-22"><a href="building-more-complex-plots.html#cb20-22" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Area (ha)&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Nanxiong Bornze Age Site Areas&quot;</span>,</span>
-<span id="cb20-23"><a href="building-more-complex-plots.html#cb20-23" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="st">&quot;Boxplot + jittered points</span><span class="sc">\n</span><span class="st">...with ggplot&quot;</span>)</span>
-<span id="cb20-24"><a href="building-more-complex-plots.html#cb20-24" tabindex="-1"></a></span>
-<span id="cb20-25"><a href="building-more-complex-plots.html#cb20-25" tabindex="-1"></a>p_viol <span class="sc">+</span> p_box</span></code></pre></div>
-<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="building-more-complex-plots.html#cb21-1" tabindex="-1"></a><span class="co">#or </span></span>
-<span id="cb21-2"><a href="building-more-complex-plots.html#cb21-2" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="building-more-complex-plots.html#cb21-3" tabindex="-1"></a>p_viol <span class="sc">/</span> p_box</span></code></pre></div>
-<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
-<p>The logic of arrangement can be extended to more panes.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="building-more-complex-plots.html#cb22-1" tabindex="-1"></a>(p_box <span class="sc">+</span> p_box) <span class="sc">/</span> p_viol</span></code></pre></div>
-<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>More complex arrangements with more elements are possible, as are various neat tricks likes shared axes; see the <a href="https://patchwork.data-imaginist.com/">documentation</a> for details.</p>
-</div>
+<div id="to-do" class="section level1 unnumbered hasAnchor">
+<h1>To do<a href="to-do.html#to-do" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<ul>
+<li>for dRennan:
+<ul>
+<li>add refs/links in dRennan text to sections below</li>
+<li>check code in dRennan text; rewrite based on Baxter 2015 code</li>
+<li>check rank correlation chapter - where does Spearman’s rho denominator come from?</li>
+<li>replace dplyr::recode with dplyr::case_when or forcats::fct_recode</li>
+</ul></li>
+<li><strong>janitor</strong> version of crosstabs and marginal totals? <code>adorn</code></li>
+<li>add asides - make these separate workshop pages? - e.g. on
+<ul>
+<li>Otarola-Castillo &amp; Torquato on Bayesian methods [otarola-castillo-torquato_BayesianStats.Rmd]
+<ul>
+<li>on Bayesian and MCMC <span class="citation">(Cowgill 1993; Litton and Buck 1995)</span></li>
+</ul></li>
+<li>Ruiz-Giralt et al. <span class="citation">(2026)</span> on compositional data (also the <a href="https://packages.tesselle.org/nexus/"><strong>nexus</strong> package</a>)</li>
+<li>something on isotope data?
+<ul>
+<li>even just basic plotting + pointer to mixSIAR
+<ul>
+<li>could provide a home for Sir Mix-Cal-Lot</li>
+<li>basic visualization here: <a href="https://stantis.github.io/IsoDataVis/" class="uri">https://stantis.github.io/IsoDataVis/</a></li>
+</ul></li>
+</ul></li>
+<li>radiocarbon</li>
+<li>rework GIS labs in R? [~/Dropbox (Personal)/Florida/teaching/Arch&amp;GIS/LabExercises/LabExercises_R.Rmd]</li>
+<li>compositional data (see e.g. Baxter <span class="citation">(2016)</span>, Greenacre &amp; Wood <span class="citation">(2024)</span>, Glascock &amp; McDonald <span class="citation">(2023)</span>); also Greenacre &amp; Wood GitHub (<a href="https://github.com/michaelgreenacre/CODAinPractice" class="uri">https://github.com/michaelgreenacre/CODAinPractice</a>)</li>
+<li><a href="resampling.html#resampling">resampling</a>
+<ul>
+<li>more Daegling<br />
+</li>
+<li>check Good <span class="citation">(2012)</span></li>
+</ul></li>
+<li>intro to <strong>ggplot2</strong> (can mostly be pointers to, e.g., Harris (<a href="https://matthewdharris.com/2016/08/12/ggplot2-step-by-step/" class="uri">https://matthewdharris.com/2016/08/12/ggplot2-step-by-step/</a>))</li>
+<li>stratigraphic diagrams for paleoenvironmental data (pollen-style): <a href="https://dewey.dunnington.ca/post/2018/stratigraphic-diagrams-with-tidypaleo-ggplot2/" class="uri">https://dewey.dunnington.ca/post/2018/stratigraphic-diagrams-with-tidypaleo-ggplot2/</a></li>
+</ul></li>
+<li>check IGR exercises (‘/Users/daniel.contreras/UF Dropbox/Daniel Contreras/stanford_coursework/IGR_data.analysis.course’)</li>
+<li>add an R companion to Ingram’s <span class="citation">(2025)</span> ‘Climate and Human Behavior Studies for Our Warming World: An Introduction to the Models, Methods, and Data’
+<ul>
+<li>cover sources for climate data + basic visualization</li>
+<li>second step would be analytical approaches</li>
+</ul></li>
+<li>add to Data Wrangling workshop text:
+<ul>
+<li><strong>forcats</strong> package, especially functions like <code>fct_lump()</code></li>
+<li>getting the data in the shape you want is half the battle
+<ul>
+<li>“shape” here includes describing cases with:
+<ul>
+<li>the level of aggregation that you want</li>
+<li>using the variables that you are interested in</li>
+<li>also in the form that the tools you plan to use expect
+<ul>
+<li>plotting in Base R is very flexible about data format: you specify to the plotting tools which aspects of the data to use for which aspects of the plot</li>
+<li>plotting in ggplot is highly prescribed: the plotting tools digest data in particular ways, and cannot be convinced to do otherwise: data must be reshaped to the requirements of the tools</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>the other half of the battle is figuring out what you really want to know, and how to frame the questions that will give you relevant answers
+<ul>
+<li>This is the dirty secret behind the success of NHST: it’s a system of framing questions to which interpretable answers can be generated. Whether they’re the answers that are relevant to the questions that you want answered is another story…
+)</li>
+</ul></li>
+</ul></li>
+</ul>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="more-plotting.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="count-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="more-plotting.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

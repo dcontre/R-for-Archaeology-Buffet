@@ -164,6 +164,7 @@ div.csl-indent {
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="" data-path="to-do.html"><a href="to-do.html"><i class="fa fa-check"></i>To do</a></li>
 <li class="chapter" data-level="2" data-path="more-plotting.html"><a href="more-plotting.html"><i class="fa fa-check"></i><b>2</b> More Plotting</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="more-plotting.html"><a href="more-plotting.html#getting-cute-with-histograms-boxplots-and-rugs"><i class="fa fa-check"></i><b>2.1</b> Getting Cute with Histograms, Boxplots, and Rugs</a></li>
@@ -197,8 +198,9 @@ div.csl-indent {
 <li class="chapter" data-level="7.3.6" data-path="r-for-arch.html"><a href="r-for-arch.html#visualizing-archaeological-data"><i class="fa fa-check"></i><b>7.3.6</b> Visualizing archaeological data</a></li>
 <li class="chapter" data-level="7.3.7" data-path="r-for-arch.html"><a href="r-for-arch.html#correspondence-analysis-in-r"><i class="fa fa-check"></i><b>7.3.7</b> Correspondence Analysis in R</a></li>
 <li class="chapter" data-level="7.3.8" data-path="r-for-arch.html"><a href="r-for-arch.html#diversity-indices-for-ecology"><i class="fa fa-check"></i><b>7.3.8</b> Diversity indices for ecology</a></li>
-<li class="chapter" data-level="7.3.9" data-path="r-for-arch.html"><a href="r-for-arch.html#archaeosrp-an-r-package-for-extracting-and-synthesizing-federal-cultural-resources-data-for-research-and-management"><i class="fa fa-check"></i><b>7.3.9</b> ArchaeoSRP: An R Package for Extracting and Synthesizing Federal Cultural Resources Data for Research and Management</a></li>
-<li class="chapter" data-level="7.3.10" data-path="r-for-arch.html"><a href="r-for-arch.html#refitting-analysis"><i class="fa fa-check"></i><b>7.3.10</b> Refitting analysis</a></li>
+<li class="chapter" data-level="7.3.9" data-path="r-for-arch.html"><a href="r-for-arch.html#working-with-paleoecological-stratigraphic-data"><i class="fa fa-check"></i><b>7.3.9</b> Working with paleoecological stratigraphic data</a></li>
+<li class="chapter" data-level="7.3.10" data-path="r-for-arch.html"><a href="r-for-arch.html#archaeosrp-an-r-package-for-extracting-and-synthesizing-federal-cultural-resources-data-for-research-and-management"><i class="fa fa-check"></i><b>7.3.10</b> ArchaeoSRP: An R Package for Extracting and Synthesizing Federal Cultural Resources Data for Research and Management</a></li>
+<li class="chapter" data-level="7.3.11" data-path="r-for-arch.html"><a href="r-for-arch.html#refitting-analysis"><i class="fa fa-check"></i><b>7.3.11</b> Refitting analysis</a></li>
 </ul></li>
 <li class="chapter" data-level="7.4" data-path="r-for-arch.html"><a href="r-for-arch.html#general-r-resources"><i class="fa fa-check"></i><b>7.4</b> General R Resources</a></li>
 </ul></li>
@@ -255,6 +257,7 @@ div.csl-indent {
 (including his <strong>cainterptools</strong> package)</p></li>
 <li><p>Richard Telford on integrating <em>OxCal and R</em><br />
 <a href="https://quantpalaeo.wordpress.com/2016/11/19/oxcal-and-r/" class="uri">https://quantpalaeo.wordpress.com/2016/11/19/oxcal-and-r/</a></p></li>
+<li><p>Matthew Harris’ <a href="https://matthewdharris.com/"><em>Quantitative Archaeology</em> blog</a>, unfortunately apparently now defunct, but featuring lots of useful code and lucid explanation.</p></li>
 <li><p>Dave Carlson’s R resources for various statistics &amp; archaeology texts<br />
 <a href="https://sites.google.com/a/tamu.edu/dlcarlson/home/r-project-for-statistical-computing" class="uri">https://sites.google.com/a/tamu.edu/dlcarlson/home/r-project-for-statistical-computing</a></p></li>
 <li><p>Blake Vernon’s <em>Quantitative Analysis of Archaeological Data</em> course<br />
@@ -311,13 +314,17 @@ div.csl-indent {
 <h3><span class="header-section-number">7.3.8</span> Diversity indices for ecology<a href="r-for-arch.html#diversity-indices-for-ecology" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><a href="https://cran.r-project.org/web/packages/tabula/vignettes/diversity.html" class="uri">https://cran.r-project.org/web/packages/tabula/vignettes/diversity.html</a></p>
 </div>
-<div id="archaeosrp-an-r-package-for-extracting-and-synthesizing-federal-cultural-resources-data-for-research-and-management" class="section level3 hasAnchor" number="7.3.9">
-<h3><span class="header-section-number">7.3.9</span> ArchaeoSRP: An R Package for Extracting and Synthesizing Federal Cultural Resources Data for Research and Management<a href="r-for-arch.html#archaeosrp-an-r-package-for-extracting-and-synthesizing-federal-cultural-resources-data-for-research-and-management" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="working-with-paleoecological-stratigraphic-data" class="section level3 hasAnchor" number="7.3.9">
+<h3><span class="header-section-number">7.3.9</span> Working with paleoecological stratigraphic data<a href="r-for-arch.html#working-with-paleoecological-stratigraphic-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>These are probably most familiar from pollen data or the like. Try <strong>tidypaleo</strong><a href="https://github.com/paleolimbot/tidypaleo" class="uri">https://github.com/paleolimbot/tidypaleo</a>, described [here][<a href="https://dewey.dunnington.ca/post/2018/stratigraphic-diagrams-with-tidypaleo-ggplot2/" class="uri">https://dewey.dunnington.ca/post/2018/stratigraphic-diagrams-with-tidypaleo-ggplot2/</a>]</p>
+</div>
+<div id="archaeosrp-an-r-package-for-extracting-and-synthesizing-federal-cultural-resources-data-for-research-and-management" class="section level3 hasAnchor" number="7.3.10">
+<h3><span class="header-section-number">7.3.10</span> ArchaeoSRP: An R Package for Extracting and Synthesizing Federal Cultural Resources Data for Research and Management<a href="r-for-arch.html#archaeosrp-an-r-package-for-extracting-and-synthesizing-federal-cultural-resources-data-for-research-and-management" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>ArchaeoSRP</strong><a href="https://github.com/seanbergin/archaeosrp/" class="uri">https://github.com/seanbergin/archaeosrp/</a></p>
 <p><a href="https://www.cambridge.org/core/journals/advances-in-archaeological-practice/article/archaeosrp/92B9A22C434BABA191E76A1F3705AC53" class="uri">https://www.cambridge.org/core/journals/advances-in-archaeological-practice/article/archaeosrp/92B9A22C434BABA191E76A1F3705AC53</a></p>
 </div>
-<div id="refitting-analysis" class="section level3 hasAnchor" number="7.3.10">
-<h3><span class="header-section-number">7.3.10</span> Refitting analysis<a href="r-for-arch.html#refitting-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refitting-analysis" class="section level3 hasAnchor" number="7.3.11">
+<h3><span class="header-section-number">7.3.11</span> Refitting analysis<a href="r-for-arch.html#refitting-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>archaeofrag</strong><a href="https://cran.r-project.org/web/packages/archeofrag/index.html" class="uri">https://cran.r-project.org/web/packages/archeofrag/index.html</a></p>
 </div>
 </div>

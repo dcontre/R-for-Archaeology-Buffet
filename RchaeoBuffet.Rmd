@@ -26,7 +26,6 @@ This document compiles useful approaches, tips, and tricks for using R with arch
 - for dRennan:
   - add refs/links in dRennan text to sections below
   - check code in dRennan text; rewrite based on Baxter 2015 code
-  - rework spatial sampling chapter & problem set
   - check rank correlation chapter - where does Spearman's rho denominator come from?
   - replace dplyr::recode with dplyr::case_when or forcats::fct_recode
 - **janitor** version of crosstabs and marginal totals? `adorn`
@@ -35,15 +34,24 @@ This document compiles useful approaches, tips, and tricks for using R with arch
       - on Bayesian and MCMC [@cowgill1993; @Litton1995]
     - Ruiz-Giralt et al. [-@RuizGiralt2026] on compositional data (also the [**nexus** package](https://packages.tesselle.org/nexus/))
     - something on isotope data? 
+      - even just basic plotting + pointer to mixSIAR 
+        - could provide a home for Sir Mix-Cal-Lot 
+        - basic visualization here: https://stantis.github.io/IsoDataVis/
     - radiocarbon 
     - rework GIS labs in R? [~/Dropbox (Personal)/Florida/teaching/Arch&GIS/LabExercises/LabExercises_R.Rmd]
-    - compositional data (see e.g. Baxter [-@Baxter2016multi], Greenacre & Wood [-@greenacre2024], Glascock & McDonald [-@glascock2023]); also Greenacre & Wood GitHub (https://github.com/michaelgreenacre/CODAinPractice)
-- more Daegling on [resampling](#resampling) 
+    - compositional data (see e.g. Baxter [-@Baxter2016multi], Greenacre & Wood [-@greenacre2024], Glascock & McDonald [-@glascock2023]); also Greenacre & Wood GitHub (https://github.com/michaelgreenacre/CODAinPractice) 
+    - [resampling](#resampling) 
+      - more Daegling  
+      - check Good [-@Good_2012] 
+    - intro to **ggplot2** (can mostly be pointers to, e.g., Harris (https://matthewdharris.com/2016/08/12/ggplot2-step-by-step/))
+    - stratigraphic diagrams for paleoenvironmental data (pollen-style): https://dewey.dunnington.ca/post/2018/stratigraphic-diagrams-with-tidypaleo-ggplot2/
+    
 - check IGR exercises ('/Users/daniel.contreras/UF Dropbox/Daniel Contreras/stanford_coursework/IGR_data.analysis.course') 
 - add an R companion to Ingram's [-@ingram2025] 'Climate and Human Behavior Studies for Our Warming World: An Introduction to the Models, Methods, and Data' 
   - cover sources for climate data + basic visualization 
   - second step would be analytical approaches
 - add to Data Wrangling workshop text: 
+  - **forcats** package, especially functions like `fct_lump()`
   - getting the data in the shape you want is half the battle 
     - "shape" here includes describing cases with: 
       - the level of aggregation that you want 
@@ -203,7 +211,7 @@ points(x = jitter(nanxiong$x, .25), y = nanxiong$Area, cex = .6,
 ```
 
 
-Or with `ggplot`, which makes elegant plots but has idiosyncratic syntax (that I would recommend *not* screwing around with until you have a firm grasp on Base R).
+Or with `ggplot`, which makes elegant plots but has idiosyncratic syntax a prescriptive approach to data; because of those  I would recommend *not* screwing around with it until you have a firm grasp on Base R.
 
 ```{r message=F, warning=F}
 library(ggplot2)
@@ -649,6 +657,8 @@ https://github.com/acortell3/archaeoriddle
 - Richard Telford on integrating *OxCal and R*\
 <https://quantpalaeo.wordpress.com/2016/11/19/oxcal-and-r/>
 
+- Matthew Harris' [*Quantitative Archaeology* blog](https://matthewdharris.com/), unfortunately apparently now defunct, but featuring lots of useful code and lucid explanation.  
+
 - Dave Carlson's R resources for various statistics & archaeology texts\
 <https://sites.google.com/a/tamu.edu/dlcarlson/home/r-project-for-statistical-computing>
 
@@ -717,7 +727,11 @@ Visualization of Date Ranges with [**datplot**](https://cran.r-project.org/web/p
 
 ### Diversity indices for ecology
 
-<https://cran.r-project.org/web/packages/tabula/vignettes/diversity.html> 
+<https://cran.r-project.org/web/packages/tabula/vignettes/diversity.html>  
+
+### Working with paleoecological stratigraphic data 
+
+These are probably most familiar from pollen data or the like. Try **tidypaleo**<https://github.com/paleolimbot/tidypaleo>, described [here][https://dewey.dunnington.ca/post/2018/stratigraphic-diagrams-with-tidypaleo-ggplot2/]
 
 ### ArchaeoSRP: An R Package for Extracting and Synthesizing Federal Cultural Resources Data for Research and Management
 
