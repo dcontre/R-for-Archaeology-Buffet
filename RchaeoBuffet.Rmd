@@ -211,7 +211,7 @@ points(x = jitter(nanxiong$x, .25), y = nanxiong$Area, cex = .6,
 ```
 
 
-Or with `ggplot`, which makes elegant plots but has idiosyncratic syntax a prescriptive approach to data; because of those  I would recommend *not* screwing around with it until you have a firm grasp on Base R.
+Or with `ggplot` (more on that [below](#gg-intro)), which produces elegant plots but has idiosyncratic syntax a prescriptive approach to data; because of those  I would recommend *not* screwing around with it until you have a firm grasp on Base R.
 
 ```{r message=F, warning=F}
 library(ggplot2)
@@ -225,12 +225,101 @@ ggplot(data = nanxiong, aes(x = Period, y = Area, fill = Period)) +
       legend.position="none",
       plot.title = element_text(size=11)
     ) +
-    labs(x = "", y = "Area (ha)", title = "Nanxiong Bornze Age Site Areas",
+    labs(x = "", y = "Area (ha)", title = "Nanxiong Bronze Age Site Areas",
          subtitle = "Violin + boxplot + jittered points\n...with ggplot")
 ```
 
 
 You may not always know how you might like visualize the data you have, much less how to actually implement that. You can try the [R Graph Gallery](https://r-graph-gallery.com/) for inspiration. But keep in mind that a data visualization is trying to communicate information, first and foremost, and should be selected based on how well it does that (that is, you should make *lots* of data plots, but be picky about the ones that you keep, and even pickier about the ones that you share, as has been recognized since well before computational tools made generating complex graphics more accessible [@cleveland1985]). It may also be useful to consult more specifically archaeological treatments of data visualization (e.g., [@banning2020_viz; @Baxter2016graphics]; the latter is available [here](http://www.barbicanra.co.uk/simple-r.html))
+
+## A brief and opinionated introduction to **ggplot2** {#gg-intro}
+
+The **ggplot2** package is widely used and can produce elegant graphics. However (in contrast to Base R, in my opinion), it's not easy to learn, and skill in using ggplot is not easily transferable to other tasks in R. 
+
+A significant part of the problem (well, *my* problem, at least) with **ggplot2* is its cavalier approach to the English language. The *code* may be economical and lucid (this is probably beyond my capacity to judge), but the *English* is reliant on buzzwords and evangelical in tone (shapes are "geoms", properties are "aesthetics", the package uses "the grammar of graphics" [`r emo::ji("face with rolling eyes")`]). 
+<!-- If there is indeed a "grammar of graphics", then it's inherent in graphical expression, not unique to ggplot graphics - you use it whenever you make any data plot.  -->
+
+Consider this, from the Introduction in the [manual](https://ggplot2-book.org/): 
+
+> a graphic maps the data to the aesthetic attributes (colour, shape, size) of geometric objects (points, lines, bars).
+
+Translation: a data plot relates specified variables in the data to visual properties (e.g., color, shape, size) of plotted objects (e.g., points, lines, bars) that are defined by other variables. 
+
+[climbs down from soapbox]
+
+Once you wrap your head around ggplot's idiosyncratic approach to English, and realize that it demands more pre-processing of data than other plotting methods, it's an efficient way to produce elegant plots. Let's deconstruct the violin plot example from above, and then turn to putting ggplot to work with a new example. 
+
+The multiple lines below do distinct things: 
+  
+- The first line calls ggplot using the `ggplot()` function, then uses the `data = ` argument and the `aes()` function to define which data we are using (the `nanxiong` data frame) and how we want to relate variables in that data frame to plotted objects (defined by `x =` and `y = ` arguments to `aes()`) and visual properties (defined by the `fill =` argument to `aes()`). What's defined in the initial call to `ggplot()` will be *inherited* by all subsequent lines (linked by `+`). 
+  - Inheriting arguments from the initial call means that the `geom_violin()` and `geom_boxplot()` arguments, for instance, know what data to use (`nanxiong`) and what arguments to `aes()` to use (`x = Period`, `y = Area`, `fill = Period`). These can also be specified in each line. 
+  - Plot properties (x, y, color, fill, etc) are (`r emo::ji("person_shrugging")`) referred to as "aesthetics", which you "apply" to data. 
+  - Arguments to `aesthetics` (you can find a list of those accepted by any given `geom` by looking at, e.g., `?geom_boxplot`) that link variables to plot properties *can only be made* inside of a call to `aes()`. If they are made *outside* of a call to `aes()`, they can only be static. That is, if you want to define `x` as the value in the `Period` column of the `nanxiong` data frame, you have to use `aes(x = Period)`, and must already have established that `data = nanxiong`. If instead you want to used a *fixed value* (e.g., to plot everything at the same *x* coordinate or in the same color), then you can specify particular values outside of `aes()`. For example, you might want the fill of whatever shapes you plot to *either* vary according the value of the 'Period' variable *or* always be chartreuse. In the former case, you'd make an argument to `aes()` (`aes(fill = Period)`) and in the latter case you'd specify a value for 'fill' *outside* of any arguments to `aes()` (`fill = "chartreuse"`). Note that any given geom will *require* that some aesthetics be mapped to variables (e.g., `geom_point()` has `x` and `y` as "required aesthetics" - but this makes sense, since points are defined by *x* and *y* values and can't exist, much less be plotted, without them).
+- The subsequent lines are of three types: 'geom', 'theme', and 'labs'. 
+  - The term 'geom' is ggplot-speak for "shape"; each call to a `geom_()` function adds a particular shape to the plot 
+  - In ggplot, 'theme' is a *style* for the plot as a whole (e.g., color of the background, font size, etc). These exist as templates, or elements can be modified individually. I use `theme_minimal()` below, as I do habitually, but install the **ggthemes** package and uncomment the `ggthemes::theme_wsj()` line to see what a difference a theme can make (note that these run sequentially, so if you have two lines specifying themes the second will overwrite the first). The second call to `theme()` sets some individual elements. 
+  - The call to `labs()` specifies plot labels - title, subtitle, x and y axes, etc. 
+
+
+```{r}
+
+ggplot(data = nanxiong, aes(x = Period, y = Area, fill = Period)) +  # calls ggplot
+    geom_violin(width = 1.4) +
+    geom_boxplot(width = 0.1, color = "grey", alpha = 0.2) +
+    geom_point(size = .5, position = position_jitter(.1), alpha = .3) +
+    theme_minimal() +
+    # ggthemes::theme_wsj() +
+    theme(
+      legend.position = "none",
+      plot.title = element_text(size=11)
+    ) +
+    labs(x = "", y = "Area (ha)", title = "Nanxiong Bronze Age Site Areas",
+         subtitle = "Violin + boxplot + jittered points\n...with ggplot")
+
+```
+
+The code below is exactly equivalent, but specifies the `data =` and `aes()` arguments for each 'geom' rather than placing them in the initial `ggplot()` call having subsequent geoms inherit them. This is clearer but less efficient, and is mostly useful if you want to plot *different* data on the same plot. 
+
+```{r}
+
+ggplot() +  # calls ggplot
+    geom_violin(data = nanxiong, aes(x = Period, y = Area, fill = Period), width=1.4) +
+    geom_boxplot(data = nanxiong, aes(x = Period, y = Area, fill = Period), 
+                 width = 0.1, color = "chartreuse", alpha = 0.2) +
+    geom_point(data = nanxiong, aes(x = Period, y = Area, fill = Period), 
+               size = .5, position = position_jitter(.1), alpha = .3) +
+    theme_minimal() +
+    theme(
+      legend.position = "none",
+      plot.title = element_text(size=11)
+    ) +
+    labs(x = "", y = "Area (ha)", title = "Nanxiong Bronze Age Site Areas",
+         subtitle = "Violin + boxplot + jittered points\n...with ggplot")
+```
+
+
+[//]:
+(
+To add: 
+
+- a basic insight of ggplot: the same data can be plotted as different shapes (e.g., a series of *(x,y)* points can describe a collection of dots *or* - if connected - a line). 
+- more from https://web.archive.org/web/20200807193250/http://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html
+- example of long v wide (see https://web.archive.org/web/20200807193250/http://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html#the_1_faq) 
+- rebuild example from https://matthewdharris.com/2016/08/12/ggplot2-step-by-step/ 
+
+)
+
+A few general thoughts about ggplot:
+
+-   If you only have a little knowledge of both base R and **ggplot**, it's easier to produce elegant plots with **ggplot**...but harder to control them. If you know both reasonably well, you can produce elegant plots with either; for *complex* plots I usually turn to **ggplot**.
+-   **ggplot** often demands significant data preparation beforehand so that the data are in the format that **ggplot** expects (long rather than wide). If you're not conversant with **dplyr** this will be maddening. Base R can much more easily be coaxed to plot in ways that work with existing data. 
+  - A corollary is that manipulating a **gplot** plot is as *likely to involve manipulating the data being plotted* as it is to involve manipulating the plot directly.
+-   **ggplot** (like the **tidyverse** in general) tends to be pretty *prescriptive*. As with any template, it's a good idea to think about what *you* want, and how well the template matches your desires, rather than just assuming that the **ggplot** defaults are a) right, and b) smarter than you are.
+
+You can of course consult the full **ggplot** [manual](https://ggplot2-book.org/). For an example with archaeological data, see the ['Visualizing Data' portion](https://carpentries-incubator.github.io/R-archaeology-lesson/04-visualization-ggplot2.html) of the Data Carpentry *Data Analysis and Visualization in R for Archaeologists*. Joe Roe's [presentation on using R for  visualization of archaeological data](https://joeroe.io/r4r_visualisation/r4r_visualisation_slides.html#1) is also focused mostly on ggplot, and very useful. 
+
+
+
 
 # Building more complex plots
 

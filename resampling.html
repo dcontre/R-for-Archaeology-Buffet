@@ -169,6 +169,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="2.1" data-path="more-plotting.html"><a href="more-plotting.html#getting-cute-with-histograms-boxplots-and-rugs"><i class="fa fa-check"></i><b>2.1</b> Getting Cute with Histograms, Boxplots, and Rugs</a></li>
 <li class="chapter" data-level="2.2" data-path="more-plotting.html"><a href="more-plotting.html#boxplot-alternatives"><i class="fa fa-check"></i><b>2.2</b> Boxplot alternatives</a></li>
+<li class="chapter" data-level="2.3" data-path="more-plotting.html"><a href="more-plotting.html#gg-intro"><i class="fa fa-check"></i><b>2.3</b> A brief and opinionated introduction to <strong>ggplot2</strong></a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="building-more-complex-plots.html"><a href="building-more-complex-plots.html"><i class="fa fa-check"></i><b>3</b> Building more complex plots</a>
 <ul>
@@ -232,24 +233,24 @@ div.csl-indent {
 </blockquote>
 <p>But even if we were to accept Dart’s inference that the damage is the result of bloodthirsty australopithecines (paleoanthropologists don’t, for the record), does 7 of 9 left-side injuries really constitute compelling evidence that austrolopithecines were right-handed? Is there a case to answer?
 We can address this through resampling by framing the question as, “If australopithecines were equally likely to be left- or right-handed, how likely is it that in a sample of nine only 2 would be left-handed?”</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="resampling.html#cb52-1" tabindex="-1"></a><span class="co"># make some data</span></span>
-<span id="cb52-2"><a href="resampling.html#cb52-2" tabindex="-1"></a></span>
-<span id="cb52-3"><a href="resampling.html#cb52-3" tabindex="-1"></a>hand <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;R&#39;</span>,<span class="st">&#39;L&#39;</span>)</span>
-<span id="cb52-4"><a href="resampling.html#cb52-4" tabindex="-1"></a></span>
-<span id="cb52-5"><a href="resampling.html#cb52-5" tabindex="-1"></a>southpaw <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb52-6"><a href="resampling.html#cb52-6" tabindex="-1"></a></span>
-<span id="cb52-7"><a href="resampling.html#cb52-7" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
-<span id="cb52-8"><a href="resampling.html#cb52-8" tabindex="-1"></a>  </span>
-<span id="cb52-9"><a href="resampling.html#cb52-9" tabindex="-1"></a>  bash <span class="ot">&lt;-</span> <span class="fu">sample</span>(hand,<span class="dv">9</span>,<span class="at">replace=</span><span class="cn">TRUE</span>)</span>
-<span id="cb52-10"><a href="resampling.html#cb52-10" tabindex="-1"></a>  southpaw[i] <span class="ot">&lt;-</span> <span class="fu">length</span>(bash[bash<span class="sc">==</span><span class="st">&#39;L&#39;</span>])</span>
-<span id="cb52-11"><a href="resampling.html#cb52-11" tabindex="-1"></a>  </span>
-<span id="cb52-12"><a href="resampling.html#cb52-12" tabindex="-1"></a>}</span>
-<span id="cb52-13"><a href="resampling.html#cb52-13" tabindex="-1"></a></span>
-<span id="cb52-14"><a href="resampling.html#cb52-14" tabindex="-1"></a><span class="co">#visualize</span></span>
-<span id="cb52-15"><a href="resampling.html#cb52-15" tabindex="-1"></a><span class="fu">hist</span>(southpaw)</span></code></pre></div>
-<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="resampling.html#cb53-1" tabindex="-1"></a><span class="co">#calculate</span></span>
-<span id="cb53-2"><a href="resampling.html#cb53-2" tabindex="-1"></a><span class="fu">length</span>(southpaw[southpaw<span class="sc">&lt;=</span><span class="dv">2</span>])<span class="sc">/</span><span class="fu">length</span>(southpaw)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="resampling.html#cb56-1" tabindex="-1"></a><span class="co"># make some data</span></span>
+<span id="cb56-2"><a href="resampling.html#cb56-2" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="resampling.html#cb56-3" tabindex="-1"></a>hand <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;R&#39;</span>,<span class="st">&#39;L&#39;</span>)</span>
+<span id="cb56-4"><a href="resampling.html#cb56-4" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="resampling.html#cb56-5" tabindex="-1"></a>southpaw <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb56-6"><a href="resampling.html#cb56-6" tabindex="-1"></a></span>
+<span id="cb56-7"><a href="resampling.html#cb56-7" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb56-8"><a href="resampling.html#cb56-8" tabindex="-1"></a>  </span>
+<span id="cb56-9"><a href="resampling.html#cb56-9" tabindex="-1"></a>  bash <span class="ot">&lt;-</span> <span class="fu">sample</span>(hand,<span class="dv">9</span>,<span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb56-10"><a href="resampling.html#cb56-10" tabindex="-1"></a>  southpaw[i] <span class="ot">&lt;-</span> <span class="fu">length</span>(bash[bash<span class="sc">==</span><span class="st">&#39;L&#39;</span>])</span>
+<span id="cb56-11"><a href="resampling.html#cb56-11" tabindex="-1"></a>  </span>
+<span id="cb56-12"><a href="resampling.html#cb56-12" tabindex="-1"></a>}</span>
+<span id="cb56-13"><a href="resampling.html#cb56-13" tabindex="-1"></a></span>
+<span id="cb56-14"><a href="resampling.html#cb56-14" tabindex="-1"></a><span class="co">#visualize</span></span>
+<span id="cb56-15"><a href="resampling.html#cb56-15" tabindex="-1"></a><span class="fu">hist</span>(southpaw)</span></code></pre></div>
+<p><img src="RchaeoBuffet_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="resampling.html#cb57-1" tabindex="-1"></a><span class="co">#calculate</span></span>
+<span id="cb57-2"><a href="resampling.html#cb57-2" tabindex="-1"></a><span class="fu">length</span>(southpaw[southpaw<span class="sc">&lt;=</span><span class="dv">2</span>])<span class="sc">/</span><span class="fu">length</span>(southpaw)</span></code></pre></div>
 <pre><code>## [1] 0.081</code></pre>
 </div>
             </section>
