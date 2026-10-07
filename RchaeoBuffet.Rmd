@@ -20,8 +20,8 @@ library(kableExtra)
 
 This document compiles useful approaches, tips, and tricks for using R with archaeological data. Example data used are from Drennan [-@Drennan_2009] unless otherwise specified. This is a smorgasbord, *not* an introduction to analytical methods. For data manipulation, see [Data Wrangling for Archaeology](https://dcontre.github.io/Rchaeology/introduction.html). 
 
-[//]:
-(
+
+<!--  
 # To do {-}
 - for dRennan:
   - add refs/links in dRennan text to sections below
@@ -61,7 +61,7 @@ This document compiles useful approaches, tips, and tricks for using R with arch
         - plotting in ggplot is highly prescribed: the plotting tools digest data in particular ways, and cannot be convinced to do otherwise: data must be reshaped to the requirements of the tools
   - the other half of the battle is figuring out what you really want to know, and how to frame the questions that will give you relevant answers 
     - This is the dirty secret behind the success of NHST: it's a system of framing questions to which interpretable answers can be generated. Whether they're the answers that are relevant to the questions that you want answered is another story... 
-)  
+-->
 
 
 
@@ -298,16 +298,14 @@ ggplot() +  # calls ggplot
 ```
 
 
-[//]:
-(
+<!-- 
 To add: 
 
 - a basic insight of ggplot: the same data can be plotted as different shapes (e.g., a series of *(x,y)* points can describe a collection of dots *or* - if connected - a line). 
 - more from https://web.archive.org/web/20200807193250/http://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html
 - example of long v wide (see https://web.archive.org/web/20200807193250/http://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html#the_1_faq) 
 - rebuild example from https://matthewdharris.com/2016/08/12/ggplot2-step-by-step/ 
-
-)
+ -->
 
 A few general thoughts about ggplot:
 
