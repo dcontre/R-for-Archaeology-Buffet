@@ -30,7 +30,7 @@
   
   
 
-<link rel="next" href="to-do.html"/>
+<link rel="next" href="more-plotting.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -164,7 +164,6 @@ div.csl-indent {
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="" data-path="to-do.html"><a href="to-do.html"><i class="fa fa-check"></i>To do</a></li>
 <li class="chapter" data-level="2" data-path="more-plotting.html"><a href="more-plotting.html"><i class="fa fa-check"></i><b>2</b> More Plotting</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="more-plotting.html"><a href="more-plotting.html#getting-cute-with-histograms-boxplots-and-rugs"><i class="fa fa-check"></i><b>2.1</b> Getting Cute with Histograms, Boxplots, and Rugs</a></li>
@@ -230,6 +229,47 @@ div.csl-indent {
 <div id="introduction" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> Introduction<a href="introduction.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This document compiles useful approaches, tips, and tricks for using R with archaeological data. Example data used are from Drennan <span class="citation">(2009)</span> unless otherwise specified. This is a smorgasbord, <em>not</em> an introduction to analytical methods. For data manipulation, see <a href="https://dcontre.github.io/Rchaeology/introduction.html">Data Wrangling for Archaeology</a>.</p>
+<!--  
+# To do {-}
+- for dRennan:
+  - add refs/links in dRennan text to sections below
+  - check code in dRennan text; rewrite based on Baxter 2015 code
+  - check rank correlation chapter - where does Spearman's rho denominator come from?
+  - replace dplyr::recode with dplyr::case_when or forcats::fct_recode
+- **janitor** version of crosstabs and marginal totals? `adorn`
+- add asides - make these separate workshop pages? - e.g. on  
+    - Otarola-Castillo & Torquato on Bayesian methods [otarola-castillo-torquato_BayesianStats.Rmd]
+      - on Bayesian and MCMC [@cowgill1993; @Litton1995]
+    - Ruiz-Giralt et al. [-@RuizGiralt2026] on compositional data (also the [**nexus** package](https://packages.tesselle.org/nexus/))
+    - something on isotope data? 
+      - even just basic plotting + pointer to mixSIAR 
+        - could provide a home for Sir Mix-Cal-Lot 
+        - basic visualization here: https://stantis.github.io/IsoDataVis/
+    - radiocarbon 
+    - rework GIS labs in R? [~/Dropbox (Personal)/Florida/teaching/Arch&GIS/LabExercises/LabExercises_R.Rmd]
+    - compositional data (see e.g. Baxter [-@Baxter2016multi], Greenacre & Wood [-@greenacre2024], Glascock & McDonald [-@glascock2023]); also Greenacre & Wood GitHub (https://github.com/michaelgreenacre/CODAinPractice) 
+    - [resampling](#resampling) 
+      - more Daegling  
+      - check Good [-@Good_2012] 
+    - intro to **ggplot2** (can mostly be pointers to, e.g., Harris (https://matthewdharris.com/2016/08/12/ggplot2-step-by-step/))
+    - stratigraphic diagrams for paleoenvironmental data (pollen-style): https://dewey.dunnington.ca/post/2018/stratigraphic-diagrams-with-tidypaleo-ggplot2/
+    
+- check IGR exercises ('/Users/daniel.contreras/UF Dropbox/Daniel Contreras/stanford_coursework/IGR_data.analysis.course') 
+- add an R companion to Ingram's [-@ingram2025] 'Climate and Human Behavior Studies for Our Warming World: An Introduction to the Models, Methods, and Data' 
+  - cover sources for climate data + basic visualization 
+  - second step would be analytical approaches
+- add to Data Wrangling workshop text: 
+  - **forcats** package, especially functions like `fct_lump()`
+  - getting the data in the shape you want is half the battle 
+    - "shape" here includes describing cases with: 
+      - the level of aggregation that you want 
+      - using the variables that you are interested in 
+      - also in the form that the tools you plan to use expect 
+        - plotting in Base R is very flexible about data format: you specify to the plotting tools which aspects of the data to use for which aspects of the plot 
+        - plotting in ggplot is highly prescribed: the plotting tools digest data in particular ways, and cannot be convinced to do otherwise: data must be reshaped to the requirements of the tools
+  - the other half of the battle is figuring out what you really want to know, and how to frame the questions that will give you relevant answers 
+    - This is the dirty secret behind the success of NHST: it's a system of framing questions to which interpretable answers can be generated. Whether they're the answers that are relevant to the questions that you want answered is another story... 
+-->
 </div>
             </section>
 
@@ -237,7 +277,7 @@ div.csl-indent {
         </div>
       </div>
 
-<a href="to-do.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="more-plotting.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
