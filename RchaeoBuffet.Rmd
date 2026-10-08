@@ -18,7 +18,7 @@ library(kableExtra)
 
 # Introduction 
 
-This document compiles useful approaches, tips, and tricks for using R with archaeological data. Example data used are from Drennan [-@Drennan_2009] unless otherwise specified. This is a smorgasbord, *not* an introduction to analytical methods. For data manipulation, see [Data Wrangling for Archaeology](https://dcontre.github.io/Rchaeology/introduction.html). 
+This document compiles useful approaches, tips, and tricks for using R with archaeological data. Example data used are from Drennan [-@Drennan_2009] unless otherwise specified. This is a smorgasbord, *not* an introduction to analytical methods. For data manipulation, see [Data Wrangling for Archaeology](https://dcontre.github.io/DataWrangling_notes/introduction.html). 
 
 
 <!--  
@@ -60,7 +60,7 @@ This document compiles useful approaches, tips, and tricks for using R with arch
         - plotting in Base R is very flexible about data format: you specify to the plotting tools which aspects of the data to use for which aspects of the plot 
         - plotting in ggplot is highly prescribed: the plotting tools digest data in particular ways, and cannot be convinced to do otherwise: data must be reshaped to the requirements of the tools
   - the other half of the battle is figuring out what you really want to know, and how to frame the questions that will give you relevant answers 
-    - This is the dirty secret behind the success of NHST: it's a system of framing questions to which interpretable answers can be generated. Whether they're the answers that are relevant to the questions that you want answered is another story... 
+    - This is the dirty secret behind the success of NHST: it's a system of framing questions to which interpretable answers can be generated. Whether they're the answers that are relevant to the questions that you *want* answered is another story... 
 -->
 
 
