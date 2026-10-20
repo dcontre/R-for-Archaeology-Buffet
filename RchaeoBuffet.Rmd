@@ -14,6 +14,8 @@ library(dplyr)
 library(magrittr)
 library(knitr)
 library(kableExtra)
+library(janitor)
+library(tidyr)
 ```
 
 # Introduction 
@@ -316,7 +318,119 @@ A few general thoughts about ggplot:
 
 You can of course consult the full **ggplot** [manual](https://ggplot2-book.org/). For an example with archaeological data, see the ['Visualizing Data' portion](https://carpentries-incubator.github.io/R-archaeology-lesson/04-visualization-ggplot2.html) of the Data Carpentry *Data Analysis and Visualization in R for Archaeologists*. Joe Roe's [presentation on using R for  visualization of archaeological data](https://joeroe.io/r4r_visualisation/r4r_visualisation_slides.html#1) is also focused mostly on ggplot, and very useful. 
 
+## Bullet Plots 
 
+Drennan emphasizes the utility of bullet plots, but there aren't any tools in R that build them for you. I've built on some code that Ian Robertson wrote several years ago to illustrate a couple of means of doing so below, using confidence intervals around estimated population proportions.
+
+Suppose that you have carbon (C) and nitrogen (N) isotopic data on human bone collagen from two villages - one (Cayo Cedro) practically on the beach, the other (Llano Doloroso) further inland and near several irrigation canals. Your friendly neighborhood isotopic analyst has not only measured C and N for you, but used those measurements and some local reference values to estimate the proportion of each individual's diet derived from marine protein. You hope to use these data to test your hypothesis that littoral settlements and inland settlements were part of a unified subsistence system, in which the former provided fish and shellfish and the latter maize and chiles. 
+If your hypothesis were correct, the two settlements would have similar proportions of inhabitants who consume primarily terrestrial resources and inhabitants who consume predominantly marine resources. You resolve to compare the proportion of meat-eaters and fish-eaters - as you might call them in the privacy of your own head - in the samples from each site in order to contrast the diets of coastal and inland populations. Since the analyses are *expensive* and you are only allowed to take a small number of samples, you will have to make do with smaller samples than you would like.  
+
+
+
+```{r}
+
+diets <- data.frame(Site = c("Cayo Cedro", "Llano Doloroso"), 
+                                "Meat Eaters" = c(12, 16), 
+                               "Fish Eaters" = c(16, 9))
+
+# add proportions using janitor
+diets_prop <- adorn_percentages(diets, "row")
+
+# add sample size
+diets_prop$n <- rowSums(diets[,2:3])
+```
+
+Rather than calculate the confidence intervals into a separate object, we'll add them to our data frame. This will be *much* easier if we use `pivot_longer()` so that instead of one row per site, we have one row per group per site - i.e., one row for fish eaters and one for meat eaters from each site. 
+
+```{r}
+diets_prop_long <- diets_prop %>% 
+  pivot_longer(cols = Meat.Eaters:Fish.Eaters, 
+                                       names_to = "Diet", values_to = "Prop")
+
+# function for calculating standard error of the proportion
+SEP <- function(p, n) {(sqrt(p*(1-p))) / sqrt(n)}
+
+# use function to calculate standard errors
+diets_prop_long$SE <- SEP(diets_prop_long$Prop, diets_prop_long$n)
+```
+
+With the standard errors for each proportion, we can calculate the confidence intervals, which we'll also store in their own columns. Using **dplyr**'s `mutate()` function makes this very efficient. If you prefer, you can instead add each column individually using Base R, as in the commented-out line. 
+
+```{r}
+# diets_prop_long$low99 <- diets_prop_long$Prop - (SE * qt((.99 + 1)/2, df = n - 1))
+
+diets_prop_long <- diets_prop_long %>% mutate(
+  low99 = Prop - (SE * qt((.99 + 1)/2, df = n - 1)), 
+  high99 = Prop + (SE * qt((.99 + 1)/2, df = n - 1)),
+  low95 = Prop - (SE * qt((.95 + 1)/2, df = n - 1)),
+  high95 = Prop + (SE * qt((.95 + 1)/2, df = n - 1)),
+  low80 = Prop - (SE * qt((.8 + 1)/2, df = n - 1)),
+  high80 = Prop + (SE * qt((.8 + 1)/2, df = n - 1)))
+
+```
+
+Now we can build a bullet plot using these values. 
+
+```{r}
+# easier if you separate them by site
+
+diets_prop_long_CC <- diets_prop_long[diets_prop_long$Site == "Cayo Cedro",]
+diets_prop_long_LD <- diets_prop_long[diets_prop_long$Site == "Llano Doloroso",]
+
+COL <- c(1, 2, 1) #set up colors 
+LWD <- c(3, 7, 9) #line widths
+AT <- c(1, 2, 4, 5) #locations
+
+par(mar = c(7,4,2,1)) #add some extra bottom margin so our labels don't fall off
+plot(0, type = "n", ylim = c(0, 1), xlim = c(0, 6), xaxt = "n", 
+     ylab = "Proportion", xlab = "",  main = "", asp = 4)
+segments(AT[c(1,3)], y0 = diets_prop_long_CC$low99, 
+         y1 = diets_prop_long_CC$high99, lwd = LWD[1], 
+         col = COL[1])
+segments(AT[c(2,4)], y0 = diets_prop_long_LD$low99, 
+         y1 = diets_prop_long_LD$high99, lwd = LWD[1], 
+         col = COL[1])
+segments(AT[c(1,3)], y0 = diets_prop_long_CC$low95, 
+         y1 = diets_prop_long_CC$high95, lwd = LWD[2], 
+         col = COL[2])
+segments(AT[c(2,4)], y0 = diets_prop_long_LD$low95, 
+         y1 = diets_prop_long_LD$high95, lwd = LWD[2], 
+         col=COL[2])
+segments(AT[c(1,3)], y0 = diets_prop_long_CC$low80, 
+         y1 = diets_prop_long_CC$high80, lwd = LWD[3], 
+         col=COL[3])
+segments(AT[c(2,4)], y0 = diets_prop_long_LD$low80, 
+         y1 = diets_prop_long_LD$high80, lwd = LWD[3], 
+         col = COL[3])
+points(AT, diets_prop_long$Prop[c(1,3,2,4)], pch=18, cex=2, col=2)
+axis(1, at = AT, labels = 
+       paste(diets_prop_long$Site, diets_prop_long$Diet, sep = "\n")[c(1,3,2,4)], 
+     las = 3)
+legend(6, .85, legend = c("99%", "95%", "80%"), lwd = LWD, col = COL, 
+       title = "confidence", cex = .7)
+```
+
+If you're hooked on **ggplot** and keen to build a bullet plot that way, you can instead try that (the code is more efficient, if you've done the extra set-up that creates columns with all the values). 
+
+```{r}
+diets_prop_long %>% ggplot() +
+  geom_segment(aes(x = Site, y = low99, yend = high99), linewidth = 1, color = "black") +
+  geom_segment(aes(x = Site, y = low95, yend = high95), linewidth = 2, color = "red") +
+  geom_segment(aes(x = Site, y = low80, yend = high80), linewidth = 3, color = "black") +
+  geom_point(aes(x = Site, y = Prop), col = "red", size = 4, shape = "diamond") +
+  facet_wrap(vars(Diet)) +
+  labs(y = "Proportion") +
+  theme_minimal()
+```
+
+The Base R plot might be easier to build with an additional pivot first. 
+
+```{r}
+diet_prop_wide <- diets_prop_long %>% 
+  pivot_wider(names_from = Diet, values_from = c(Prop:high80))
+```
+
+Then you can build the plot as above, calling the appropriate columns. 
 
 
 # Building more complex plots
